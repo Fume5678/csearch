@@ -11,8 +11,8 @@ Checks: "*,\
   -llvm-include-order,\
   -llvmlibc-*,\
   -modernize-use-nodiscard,\
-  -misc-non-private-member-variables-in-classes"
-WarningsAsErrors: ''
+  -misc-non-private-member-variables-in-classes,\
+  -modernize-use-trailing-return-type"
 CheckOptions:
   - key: 'bugprone-argument-comment.StrictMode'
     value: 'true'
@@ -45,7 +45,7 @@ CheckOptions:
     value: 'true'
   - key: 'readability-redundant-access-specifiers.CheckFirstDeclaration'
     value: 'true'
-# These seem to be the most common identifier styles
+  # These seem to be the most common identifier styles
   - key: 'readability-identifier-naming.AbstractClassCase'
     value: 'lower_case'
   - key: 'readability-identifier-naming.ClassCase'
@@ -152,5 +152,7 @@ CheckOptions:
     value: 'lower_case'
   - key: 'readability-identifier-naming.VirtualMethodCase'
     value: 'lower_case'
+  - key: 'readability-identifier-naming.TypeTemplateParameterIgnoredRegexp'
+    value: 'expr-type'
 ...
 
