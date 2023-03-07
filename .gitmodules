@@ -1,7 +1,0 @@
-[submodule "external/libpqxx"]
-	path = external/libpqxx
-	url = https://github.com/jtv/libpqxx
-	branch = 7.6
-[submodule "external/fmt"]
-	path = external/fmt
-	url = https://github.com/fmtlib/fmt

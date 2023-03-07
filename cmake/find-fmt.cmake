@@ -14,7 +14,6 @@ else ()
             GIT_REPOSITORY "https://github.com/fmtlib/fmt"
             GIT_TAG "a33701196adfad74917046096bf5a2aa0ab0bb50" # 9.1
             BINARY_DIR "../external/fmt"
-            USES_TERMINAL_DOWNLOAD TRUE
         )
 
         FetchContent_MakeAvailable(FMT)

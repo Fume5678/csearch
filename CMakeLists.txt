@@ -12,8 +12,9 @@ include(FetchContent)
 include(cmake/clang-tidy.cmake)
 include(cmake/find-pqxx.cmake)
 include(cmake/find-fmt.cmake)
+include(cmake/find-plog.cmake)
 
-FILE(GLOB_RECURSE CSEARCH_SRC src/csearch/Test.cpp)
+FILE(GLOB_RECURSE CSEARCH_SRC src/*)
 
 add_executable(csearch_exe ${CSEARCH_SRC} src/main.cpp)
 set_property(TARGET csearch_exe PROPERTY OUTPUT_NAME csearch)
@@ -33,3 +34,6 @@ target_link_libraries(csearch_exe PRIVATE pqxx)
 
 # fmt
 target_link_libraries(csearch_exe PRIVATE fmt::fmt-header-only)
+
+# plog
+target_link_libraries(csearch_exe PRIVATE plog)
