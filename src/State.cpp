@@ -9,15 +9,16 @@
 #include <plog/Initializers/RollingFileInitializer.h>
 #include <plog/Log.h>
 
-using namespace csearch;
+namespace csearch {
 
 State::State() {}
 
 void State::init() {
-
 #ifdef NDEBUG
   plog::init(plog::info);
 #else
 
 #endif
 }
+
+}  // namespace csearch
