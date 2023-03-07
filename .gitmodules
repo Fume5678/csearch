@@ -1,0 +1,4 @@
+[submodule "external/libpqxx"]
+	path = external/libpqxx
+	url = https://github.com/jtv/libpqxx
+	branch = 7.6
