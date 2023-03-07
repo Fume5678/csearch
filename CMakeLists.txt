@@ -6,8 +6,12 @@ project(csearch VERSION 0.1.0 LANGUAGES CXX)
 option(CSEARCH_TESTING "Enable csearch unit testing" OFF)
 option(CSEARCH_COVERAGE "Enable coverage counting" OFF)
 option(CLANG_TIDY_ENABLE "Enable to add clang-tidy" OFF)
+option(DOWNLOAD_DEPENDENCIES "Allow cmake download dependencies library" ON)
 
+include(FetchContent)
 include(cmake/clang-tidy.cmake)
+include(cmake/find-pqxx.cmake)
+include(cmake/find-fmt.cmake)
 
 FILE(GLOB_RECURSE CSEARCH_SRC src/csearch/Test.cpp)
 
@@ -24,7 +28,8 @@ target_compile_options(
 target_compile_features(csearch_exe PRIVATE cxx_std_20)
 target_include_directories(csearch_exe PRIVATE include)
 
-# libpqxx
-add_subdirectory(external/libpqxx build-pqxx)
+# _libpqxx
 target_link_libraries(csearch_exe PRIVATE pqxx)
 
+# fmt
+target_link_libraries(csearch_exe PRIVATE fmt::fmt-header-only)

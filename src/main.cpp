@@ -7,6 +7,8 @@
 #include <thread>
 #include <pqxx/pqxx>
 
+#include "fmt/format.h"
+
 int main() {
 
     Test::hello();
@@ -17,6 +19,7 @@ int main() {
         std::cout << "Failed connect to pgsql" << e.what();
     }
 
+    std::cout << fmt::format("Some msg: {}", "asd");
 
     return 0;
 }
