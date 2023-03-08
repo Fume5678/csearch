@@ -14,10 +14,12 @@ namespace csearch {
 State::State() {}
 
 void State::init() {
+  plog::RollingFileAppender<plog::CsvFormatter> fileAppender("log.csv", 8000, 1);
+  plog::ColorConsoleAppender<plog::TxtFormatter> consoleAppender;
 #ifdef NDEBUG
-  plog::init(plog::info);
+  plog::init(plog::info, &fileAppender).addAppender(&consoleAppender);
 #else
-
+  plog::init(plog::debug, &fileAppender).addAppender(&consoleAppender);
 #endif
 }
 

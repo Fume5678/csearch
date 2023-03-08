@@ -8,6 +8,6 @@ cmake-build-*/
 prefix/
 CMakeLists.txt.user
 CMakeUserPresets.json
-external/*
+external
 test_data
 

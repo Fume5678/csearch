@@ -6,7 +6,6 @@
 
 int main() {
   csearch::State state;
-
   state.init();
 
   return 0;

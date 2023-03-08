@@ -37,3 +37,6 @@ target_link_libraries(csearch_exe PRIVATE fmt::fmt-header-only)
 
 # plog
 target_link_libraries(csearch_exe PRIVATE plog)
+
+# test
+add_subdirectory(test)
