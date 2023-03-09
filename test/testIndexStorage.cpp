@@ -12,6 +12,7 @@
 #include <string>
 
 using namespace std::literals;
+using namespace anezkasearch;
 
 TEST_CASE("IndexStorage adding text key") {
   IndexStorage<std::hash<std::string>, std::uint64_t> index_storage;

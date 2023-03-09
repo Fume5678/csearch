@@ -5,7 +5,7 @@
 #include <State.h>
 
 int main() {
-  csearch::State state;
+  anezkasearch::State state;
   state.init();
 
   return 0;

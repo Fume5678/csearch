@@ -2,16 +2,16 @@
 // Created by fume on 07.03.23.
 //
 
-#ifndef CSEARCH_STATE_H
-#define CSEARCH_STATE_H
+#ifndef STATE_H
+#define STATE_H
 
-namespace csearch {
+namespace anezkasearch {
 class State {
  public:
   State();
 
   void init();
 };
-}  // namespace csearch
+}  // namespace anezkasearch
 
-#endif  // CSEARCH_STATE_H
+#endif  // ANEZKASEARCH_STATE_H

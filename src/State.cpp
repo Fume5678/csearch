@@ -9,7 +9,7 @@
 #include <plog/Initializers/RollingFileInitializer.h>
 #include <plog/Log.h>
 
-namespace csearch {
+namespace anezkasearch {
 
 State::State() {}
 
@@ -23,4 +23,4 @@ void State::init() {
 #endif
 }
 
-}  // namespace csearch
+}  // namespace anezkasearch
