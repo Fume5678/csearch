@@ -4,7 +4,7 @@
 
 #include <catch2/catch_test_macros.hpp>
 
-#include <search/IndexStorage.h>
+#include <IndexStorage.h>
 #include <cstdint>
 #include <ranges>
 #include <set>
@@ -15,16 +15,17 @@ using namespace std::literals;
 using namespace anezkasearch;
 
 TEST_CASE("IndexStorage adding text key") {
-  IndexStorage<std::hash<std::string>, std::uint64_t> index_storage;
 
-  std::set<std::uint64_t> res = index_storage.Get();
+  IndexStorage index_storage;
+
+  std::set<std::uint64_t> res = index_storage.Get("word");
+  REQUIRE(res.empty());
 
   auto key = "word"s;
-  index_storage.Insert(std::hash<std::string>{}(key), 123);
+  index_storage.Insert("word", 123);
+  const auto indexs = index_storage.Get("word");
 
-//  std::set<std::uint64_t> indexs = index_storage.Get(std::hash("word"));
-//
-//  std::vector v(indexs.begin(), indexs.end());
-//  REQUIRE(v.size() == 1);
-//  REQUIRE(v[0] == 123);
+  std::vector v(indexs.begin(), indexs.end());
+  REQUIRE(v.size() == 1);
+  REQUIRE(v[0] == 123);
 }
