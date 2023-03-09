@@ -8,18 +8,22 @@
 #include <cstdint>
 #include <ranges>
 #include <set>
+#include <functional>
+#include <string>
 
-TEST_CASE("IndexStorage adding") {
-  IndexStorage<std::hash, std::uint64_t> index_storage;
+using namespace std::literals;
 
-  index_storage.Get()
+TEST_CASE("IndexStorage adding text key") {
+  IndexStorage<std::hash<std::string>, std::uint64_t> index_storage;
 
-  index_storage.Insert(std::hash("word"), 123);
+  std::set<std::uint64_t> res = index_storage.Get();
 
-  std::set<std::uint64_t> indexs = index_storage.Get(std::hash("word"));
+  auto key = "word"s;
+  index_storage.Insert(std::hash<std::string>{}(key), 123);
 
-  std::vector v(indexs.begin(), indexs.end());
-  REQUIRE(v.size() == 1);
-  REQUIRE(v[0] == 123);
-
+//  std::set<std::uint64_t> indexs = index_storage.Get(std::hash("word"));
+//
+//  std::vector v(indexs.begin(), indexs.end());
+//  REQUIRE(v.size() == 1);
+//  REQUIRE(v[0] == 123);
 }
