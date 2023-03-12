@@ -20,23 +20,63 @@ using IntId = uint64_t;
 using StringId = std::string;
 
 template <typename T>
+concept ConcIndType =
+    !std::is_reference_v<T> &&
+    !std::is_pointer_v<T> &&
+    requires {
+      typename std::vector<T>;
+    };
+
+template <typename T>
 using IndexMap = std::unordered_map<
     std::string,
     std::set<T>
     >;
 
 template <typename IndT>
+  requires ConcIndType<IndT>
 class IndexStorage {
  public:
-  IndexStorage(std::string m_table_name);
+  IndexStorage(std::string m_table_name)
+      : m_table_name(m_table_name) {
+  }
+  
+  std::set<IndT> Get(std::string key) const {
+    if (not m_index_storage.contains(key)) {
+      return {};
+    }
 
-  void Insert(std::string key, IndT ind);
-  void Remove(std::string key);
-  void RemoveInd(IndT ind);
+    return m_index_storage.at(key);
+  }
 
-  std::set<IndT> Get(std::string key) const;
+  
+  void Insert(std::string key, IndT ind) {
+    if (not m_index_storage.contains(key)) {
+      m_index_storage.insert({key, {}});
+    }
+    m_index_storage[key].insert(ind);
+  }
 
-  std::string TableName() const;
+  
+  void Remove(std::string key) {
+    if (m_index_storage.contains(key)) {
+      m_index_storage.erase(key);
+    }
+  }
+
+  
+  void RemoveInd(IndT ind) {
+    // TODO reverse map, for remembering where index is placed
+    for (auto& [k, s] : m_index_storage){
+      s.erase(ind);
+    }
+  }
+
+  
+  std::string TableName() const {
+    return m_table_name;
+  }
+
 
  private:
   IndexMap<IndT> m_index_storage;

@@ -5,6 +5,8 @@
 #ifndef ANEZKASEARCH_INDEXER_H
 #define ANEZKASEARCH_INDEXER_H
 
-class Indexer {};
+class Indexer {
+ private:
+};
 
 #endif  // ANEZKASEARCH_INDEXER_H
