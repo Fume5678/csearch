@@ -9,28 +9,41 @@
 #include <string>
 #include <set>
 #include <cstdint>
-#include <ranges>
 #include <optional>
 #include <vector>
+#include <memory>
 
 namespace anezkasearch {
 
-using IdSet = std::set<uint64_t>;
-using IndexMap = std::unordered_map<std::string, IdSet>;
 
+using IntId = uint64_t;
+using StringId = std::string;
+
+template <typename T>
+using IndexMap = std::unordered_map<
+    std::string,
+    std::set<T>
+    >;
+
+template <typename IndT>
 class IndexStorage {
  public:
-  IndexStorage();
+  IndexStorage(std::string m_table_name);
 
-  void Insert(std::string key, std::uint64_t ind);
+  void Insert(std::string key, IndT ind);
+  void Remove(std::string key);
+  void RemoveInd(IndT ind);
 
-  IdSet Get(std::string key) const;
+  std::set<IndT> Get(std::string key) const;
 
+  std::string TableName() const;
 
  private:
-  IndexMap m_index_storage;
+  IndexMap<IndT> m_index_storage;
+  std::string m_table_name;
 };
 
 } // namespace anezkasearch
+
 
 #endif  // ANEZKASEARCH_INDEXSTORAGE_H
