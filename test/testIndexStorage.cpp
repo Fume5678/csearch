@@ -2,7 +2,7 @@
 // Created by fume on 08.03.23.
 //
 
-#include <catch2/catch_test_macros.hpp>
+#include "tests.h"
 
 #include <IndexStorage.h>
 #include <cstdint>
@@ -76,4 +76,10 @@ TEST_CASE("IndexStorage different removing index") {
   index_storage_string.RemoveInd("123");
   REQUIRE(index_storage_string.Get("asd").size() == 1);
   REQUIRE(index_storage_string.Get("qwe").empty());
+}
+
+/* Template test
+TEST_CASE("IndexStorage concept constraint wrong indexes") {
+  IndexStorage<int> index_storage("table_1"); // Ok
+  IndexStorage<int*> index_storage_2("table_2"); // must not compile
 }
