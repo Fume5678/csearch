@@ -18,13 +18,5 @@ class DataRow {
   std::string text_data;
 };
 
-template <typename IndT>
-class DBConnection {
- public:
-  virtual void Open() = 0;
-  virtual void Close() = 0;
-  virtual std::optional<DataRow<IndT>> Next() = 0;
-};
-
 } // namespace anezkasearch
 #endif  // ANEZKASEARCH_DBCONNECTION_H

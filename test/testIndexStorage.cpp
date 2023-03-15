@@ -16,14 +16,13 @@ using namespace anezkasearch;
 
 TEST_CASE("IndexStorage constructing") {
 
-  IndexStorage<IntId> index_storage("table_name");
+  IndexStorage<IntId> index_storage;
 
-  REQUIRE(index_storage.TableName() == "table_name");
 }
 
 TEST_CASE("IndexStorage adding text key") {
 
-  IndexStorage<IntId> index_storage("table_name");
+  IndexStorage<IntId> index_storage;
 
   std::set<IntId> res = index_storage.Get("word");
   REQUIRE(res.empty());
@@ -39,7 +38,7 @@ TEST_CASE("IndexStorage adding text key") {
 
 TEST_CASE("IndexStorage unique index") {
 
-  IndexStorage<IntId> index_storage("table_name");
+  IndexStorage<IntId> index_storage;
 
   auto key = "word"s;
   index_storage.Insert("word", 123);
@@ -52,24 +51,24 @@ TEST_CASE("IndexStorage unique index") {
 }
 
 TEST_CASE("IndexStorage different type of indexes") {
-  IndexStorage<StringId> index_storage_string("table_name");
+  IndexStorage<StringId> index_storage_string;
   index_storage_string.Insert("asd", "123");
   REQUIRE((*index_storage_string.Get("asd").begin()) == "123");
 
-  IndexStorage<IntId> index_storage_int("table_name");
+  IndexStorage<IntId> index_storage_int;
   index_storage_int.Insert("asd", 123);
   REQUIRE((*index_storage_int.Get("asd").begin()) == 123);
 }
 
 TEST_CASE("IndexStorage different removing keys") {
-  IndexStorage<StringId> index_storage_string("table_name");
+  IndexStorage<StringId> index_storage_string;
   index_storage_string.Insert("asd", "123");
   index_storage_string.Remove("asd");
   REQUIRE(index_storage_string.Get("asd").empty());
 }
 
 TEST_CASE("IndexStorage different removing index") {
-  IndexStorage<StringId> index_storage_string("table_name");
+  IndexStorage<StringId> index_storage_string;
   index_storage_string.Insert("asd", "123");
   index_storage_string.Insert("asd", "234");
   index_storage_string.Insert("qwe", "123");

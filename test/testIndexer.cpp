@@ -4,38 +4,44 @@
 #include "tests.h"
 
 #include <memory>
+#include <optional>
 #include <tuple>
 
 #include <AppState.h>
-#include <IndexStorage.h>
 #include <DbConnection.h>
-#include <optional>
+#include <IndexStorage.h>
+#include <Indexer.h>
 
 using namespace anezkasearch;
 
+// Db immitation
 static std::vector data_rows = {
     std::tuple(1, "title 1", "some description"),
     std::tuple(2, "name 2", "a pochemu i da"),
     std::tuple(3, "test 3", "on vsegda hotel pivka"),
 };
 
-class MockDbConnection : DBConnection<IntId>{
+// Mock Connection
+class MockDbConnection {
  public:
-  void Open() override{
+  MockDbConnection(std::shared_ptr<AppState> state) {
+  }
+
+  void Open() {
     open_count++;
 
     current_row = 0;
     max_rows = data_rows.size();
   }
 
-  void Close() override{
+  void Close() {
     close_count++;
   }
 
-  std::optional<DataRow<IntId>> Next() override{
+  std::optional<DataRow<IntId>> Next() {
     next_count++;
 
-    if(current_row >= next_count) {
+    if (current_row >= next_count) {
       return std::nullopt;
     }
 
@@ -60,29 +66,21 @@ class MockDbConnection : DBConnection<IntId>{
  private:
   int current_row;
   int max_rows;
-
 };
 
+TEST_CASE("Indexer tests") {
+  auto state = std::make_shared<AppState>();
+  auto storage = std::make_shared<IndexStorage<IntId>>();
 
-//TEST_CASE("Indexer tests") {
-//  AppState state;
-//  auto storage =
-//      std::make_shared<IndexStorage<IntId>>("data_rows");
-//
-//  SECTION("initialization and closing") {
-//    MockDbConnection connection;
-//    Indexer<MockDbConnection> indexer(state, storage);
-//
-//    auto connectin = indexer.GetConnection();
-//    CHECK(MockDbConnection::open_count == 1);
-//    REQUIRE(MockDbConnection::close_count == 1);
-//  }
-//
-//  SECTION("get next"){
-//
-//  }
-//
-//  SECTION(""){
-//
-//  }
-//}
+  SECTION("initialization and closing") {
+    Indexer<MockDbConnection, IntId> indexer(state, storage);
+    CHECK(MockDbConnection::open_count == 0);
+    REQUIRE(MockDbConnection::close_count == 0);
+  }
+
+  SECTION("run indexing") {
+  }
+
+  SECTION("") {
+  }
+}
