@@ -12,7 +12,6 @@ else()
             PLOG
             GIT_REPOSITORY "https://github.com/SergiusTheBest/plog.git"
             GIT_TAG "f47149410a4c927643148b96799f28b2d80d451b" # 1.1.9
-            BINARY_DIR "../external/plog"
         )
 
         FetchContent_MakeAvailable(PLOG)

@@ -13,7 +13,6 @@ else()
             PQXX
             GIT_REPOSITORY "https://github.com/jtv/libpqxx"
             GIT_TAG "17e5a6c8ac3abc05329891aaa378bd6004b9c8ee" # 7.7
-            BINARY_DIR "../external/pqxx"
         )
 
         FetchContent_MakeAvailable(PQXX)
