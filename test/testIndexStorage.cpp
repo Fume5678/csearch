@@ -78,8 +78,8 @@ TEST_CASE("IndexStorage different removing index") {
   REQUIRE(index_storage_string.Get("qwe").empty());
 }
 
-/* Template test
-TEST_CASE("IndexStorage concept constraint wrong indexes") {
-  IndexStorage<int> index_storage("table_1"); // Ok
-  IndexStorage<int*> index_storage_2("table_2"); // must not compile
-}
+//// Template test
+//TEST_CASE("IndexStorage concept constraint wrong indexes") {
+//  IndexStorage<int> index_storage("table_1"); // Ok
+//  IndexStorage<int*> index_storage_2("table_2"); // must not compile
+//}

@@ -5,8 +5,12 @@
 #ifndef ANEZKASEARCH_INDEXER_H
 #define ANEZKASEARCH_INDEXER_H
 
+namespace anezkasearch {
+
 class Indexer {
+ public:
  private:
 };
 
+} // namespace anezkasearch
 #endif  // ANEZKASEARCH_INDEXER_H

@@ -5,6 +5,9 @@
 #ifndef ANEZKASEARCH_APP_H
 #define ANEZKASEARCH_APP_H
 
+namespace anezkasearch {
+
 class App {};
 
+} // namespace anezkasearch
 #endif  // ANEZKASEARCH_APP_H

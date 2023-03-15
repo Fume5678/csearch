@@ -24,7 +24,9 @@ target_compile_options(
     PRIVATE -Wall
     PRIVATE -Wextra
     PRIVATE -Wno-unused-parameter
+    PRIVATE -Wno-unused-variable
     PRIVATE -Wno-ignored-attributes
+    PRIVATE -Wno-unused-but-set-variable
 )
 target_compile_features(anezkasearch_exe PRIVATE cxx_std_20)
 target_include_directories(anezkasearch_exe PRIVATE include)

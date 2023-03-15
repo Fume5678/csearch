@@ -2,8 +2,13 @@ include(../cmake/find-catch2.cmake)
 
 option(DOWNLOAD_DEPENDENCIES "Allow cmake download dependencies library" ON)
 
-FILE(GLOB_RECURSE ANEZKASEARCH_SRC ../src/IndexStorage.cpp)
+FILE(GLOB_RECURSE ANEZKASEARCH_SRC
+    ../src/TextToWords.cpp
+    ../src/IndexStorage.cpp
+    ../src/Indexer.cpp
+    )
 FILE(GLOB_RECURSE TESTS_SRC ./*.cpp)
+message(${TESTS_SRC})
 
 add_executable(anezkasearch_tests ${ANEZKASEARCH_SRC} ${TESTS_SRC})
 target_compile_features(anezkasearch_tests PRIVATE cxx_std_20)
@@ -13,7 +18,9 @@ target_compile_options(
     PRIVATE -Wall
     PRIVATE -Wextra
     PRIVATE -Wno-unused-parameter
+    PRIVATE -Wno-unused-variable
     PRIVATE -Wno-ignored-attributes
+    PRIVATE -Wno-unused-but-set-variable
 )
 target_include_directories(anezkasearch_tests PRIVATE ../include)
 

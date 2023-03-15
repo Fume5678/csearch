@@ -13,19 +13,9 @@
 #include <vector>
 #include <memory>
 
+#include <DataIDs.h>
+
 namespace anezkasearch {
-
-
-using IntId = uint64_t;
-using StringId = std::string;
-
-template <typename T>
-concept ConcIndType =
-    !std::is_reference_v<T> &&
-    !std::is_pointer_v<T> &&
-    requires {
-      typename std::vector<T>;
-    };
 
 template <typename T>
 using IndexMap = std::unordered_map<

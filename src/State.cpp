@@ -2,7 +2,7 @@
 // Created by fume on 07.03.23.
 //
 
-#include <State.h>
+#include <AppState.h>
 
 #include <plog/Appenders/ColorConsoleAppender.h>
 #include <plog/Appenders/RollingFileAppender.h>
@@ -11,9 +11,9 @@
 
 namespace anezkasearch {
 
-State::State() {}
+AppState::AppState() {}
 
-void State::init() {
+void AppState::init() {
   plog::RollingFileAppender<plog::CsvFormatter> fileAppender("log.csv", 8000, 1);
   plog::ColorConsoleAppender<plog::TxtFormatter> consoleAppender;
 #ifdef NDEBUG

@@ -6,12 +6,14 @@
 #define STATE_H
 
 namespace anezkasearch {
-class State {
+
+class AppState {
  public:
-  State();
+  AppState();
 
   void init();
 };
+
 }  // namespace anezkasearch
 
 #endif  // ANEZKASEARCH_STATE_H
