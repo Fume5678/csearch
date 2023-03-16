@@ -9,7 +9,9 @@ namespace anezkasearch {
 
 class AppState {
  public:
-  AppState();
+  AppState(){
+    // TODO временный фикс undefined reference
+  }
 
   void init();
 };

@@ -17,17 +17,17 @@
 
 namespace anezkasearch {
 
-template <typename T>
-using IndexMap = std::unordered_map<std::string, std::set<T> >;
+template <typename IdT>
+using IndexMap = std::unordered_map<std::string, std::set<IdT> >;
 
-template <typename IndT>
-  requires ConcIndType<IndT>
+template <typename IdT>
+  requires ConcIndType<IdT>
 class IndexStorage {
  public:
   IndexStorage() {
   }
 
-  std::set<IndT> Get(std::string key) const {
+  std::set<IdT> Get(std::string key) const {
     if (not m_index_storage.contains(key)) {
       return {};
     }
@@ -35,7 +35,7 @@ class IndexStorage {
     return m_index_storage.at(key);
   }
 
-  void Insert(std::string key, IndT ind) {
+  void Insert(std::string key, IdT ind) {
     if (not m_index_storage.contains(key)) {
       m_index_storage.insert({key, {}});
     }
@@ -48,7 +48,7 @@ class IndexStorage {
     }
   }
 
-  void RemoveInd(IndT ind) {
+  void RemoveInd(IdT ind) {
     // TODO reverse map, for remembering where index is placed for more fastly
     // ind deleting
     for (auto& [k, s] : m_index_storage) {
@@ -57,7 +57,7 @@ class IndexStorage {
   }
 
  private:
-  IndexMap<IndT> m_index_storage;
+  IndexMap<IdT> m_index_storage;
 };
 
 }  // namespace anezkasearch

@@ -10,11 +10,11 @@
 
 namespace anezkasearch {
 
-template <typename IndT>
-  requires ConcIndType<IndT>
+template <typename IdT>
+  requires ConcIndType<IdT>
 class DataRow {
  public:
-  IndT id;
+  IdT id;
   std::string text_data;
 };
 

@@ -22,14 +22,15 @@ static std::vector data_rows = {
 };
 
 // Mock Connection
+template <typename IndT>
 class MockDbConnection {
  public:
   MockDbConnection(std::shared_ptr<AppState> state) {
+    init_count++;
   }
 
   void Open() {
     open_count++;
-
     current_row = 0;
     max_rows = data_rows.size();
   }
@@ -53,19 +54,21 @@ class MockDbConnection {
     return {{id, text}};
   }
 
+  static inline int init_count = 0;
   static inline int open_count = 0;
   static inline int close_count = 0;
   static inline int next_count = 0;
 
   static void reset_static() {
+    init_count = 0;
     open_count = 0;
     close_count = 0;
     next_count = 0;
   }
 
  private:
-  int current_row;
-  int max_rows;
+  int current_row{};
+  int max_rows{};
 };
 
 TEST_CASE("Indexer tests") {
@@ -73,14 +76,23 @@ TEST_CASE("Indexer tests") {
   auto storage = std::make_shared<IndexStorage<IntId>>();
 
   SECTION("initialization and closing") {
-    Indexer<MockDbConnection, IntId> indexer(state, storage);
-    CHECK(MockDbConnection::open_count == 0);
-    REQUIRE(MockDbConnection::close_count == 0);
+    Indexer<IntId, MockDbConnection> indexer(state, storage);
+    CHECK(MockDbConnection<IntId>::init_count == 1);
+    CHECK(MockDbConnection<IntId>::open_count == 0);
+    REQUIRE(MockDbConnection<IntId>::close_count == 0);
   }
 
+  MockDbConnection<IntId>::reset_static();
   SECTION("run indexing") {
+    Indexer<IntId, MockDbConnection> indexer(state, storage);
+    indexer.Run();
+    CHECK(MockDbConnection<IntId>::init_count == 1);
+    CHECK(MockDbConnection<IntId>::open_count == 1);
+    CHECK(MockDbConnection<IntId>::close_count == 1);
+    CHECK(MockDbConnection<IntId>::next_count == 3);
   }
 
-  SECTION("") {
-  }
+//  MockDbConnection::reset_static();
+//  SECTION("") {
+//  }
 }
