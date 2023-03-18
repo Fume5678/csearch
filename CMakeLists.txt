@@ -13,6 +13,7 @@ include(cmake/clang-tidy.cmake)
 include(cmake/find-pqxx.cmake)
 include(cmake/find-fmt.cmake)
 include(cmake/find-plog.cmake)
+include(cmake/find-cppcoro.cmake)
 
 FILE(GLOB_RECURSE ANEZKASEARCH_SRC src/*)
 
@@ -31,14 +32,14 @@ target_compile_options(
 target_compile_features(anezkasearch_exe PRIVATE cxx_std_20)
 target_include_directories(anezkasearch_exe PRIVATE include)
 
-# _libpqxx
-target_link_libraries(anezkasearch_exe PRIVATE pqxx)
-
-# fmt
-target_link_libraries(anezkasearch_exe PRIVATE fmt::fmt-header-only)
-
-# plog
-target_link_libraries(anezkasearch_exe PRIVATE plog)
+# target link libraries
+SET(LIBRARIES
+    PRIVATE pqxx
+    PRIVATE fmt::fmt-header-only
+    PRIVATE plog
+    PRIVATE cppcoro::cppcoro
+)
+target_link_libraries(anezkasearch_exe ${LIBRARIES})
 
 # test
 add_subdirectory(test)
