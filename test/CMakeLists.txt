@@ -7,8 +7,13 @@ FILE(GLOB_RECURSE ANEZKASEARCH_SRC
     ../src/TextToWords.cpp
     ../src/IndexStorage.cpp
     ../src/Indexer.cpp
+    ../src/AppState.cpp
     )
-FILE(GLOB_RECURSE TESTS_SRC ./*.cpp)
+FILE(GLOB_RECURSE TESTS_SRC
+    ./testmain.cpp.cpp
+    ./testTextToWords.cpp
+    ./testIndexer.cpp
+)
 message(${TESTS_SRC})
 
 add_executable(anezkasearch_tests ${ANEZKASEARCH_SRC} ${TESTS_SRC})
@@ -25,6 +30,7 @@ target_compile_options(
 )
 target_include_directories(anezkasearch_tests PRIVATE ../include)
 target_link_libraries(anezkasearch_tests PRIVATE Catch2::Catch2WithMain)
+target_link_libraries(anezkasearch_tests PRIVATE ${LIBRARIES})
 
 if(ENABLED_BENCHMARK)
     target_compile_definitions(anezkasearch_tests PRIVATE ENABLED_BENCHMARK)
