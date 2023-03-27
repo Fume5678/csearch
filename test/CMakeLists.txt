@@ -13,6 +13,7 @@ FILE(GLOB_RECURSE TESTS_SRC
     ./testmain.cpp.cpp
     ./testTextToWords.cpp
     ./testIndexer.cpp
+    ./testIndexStorage.cpp
 )
 message(${TESTS_SRC})
 
