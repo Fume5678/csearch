@@ -18,8 +18,7 @@ class AppState {
  public:
   AppState();
 
-  static bool m_logger_inited;
-
+  static void InitLog();
   std::optional<Config> GetConfig() const;
 
   void LoadConfig(std::string path);
