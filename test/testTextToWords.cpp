@@ -49,7 +49,9 @@ TEST_CASE("TextToWords") {
     }
 
     std::stringstream sstr2;
-    for (char const c : arr_words | std::views::join) sstr2 << c;
+    for (auto c : arr_words) {
+      sstr2 << c;
+    }
 
     REQUIRE_THAT(sstr.str(), Catch::Matchers::Equals(sstr.str()));
   }
@@ -59,12 +61,11 @@ TEST_CASE("TextToWords") {
     TextToWords text_to_words(str);
     std::vector<std::string> arr;
 
-    while(text_to_words){
-        arr.push_back(*text_to_words);
-        text_to_words.Next();
+    while (text_to_words) {
+      arr.push_back(*text_to_words);
+      text_to_words.Next();
     }
 
     REQUIRE(arr == std::vector<std::string>{"some", "description", "vsegda"});
-
   }
 }

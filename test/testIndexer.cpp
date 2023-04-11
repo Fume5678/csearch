@@ -88,10 +88,6 @@ TEST_CASE("Indexer tests") {
 
   MockDbConnection<IntId>::reset_static();
   SECTION("run indexing") {
-    plog::RollingFileAppender<plog::CsvFormatter> fileAppender("log.csv", 8000, 1);
-    plog::ColorConsoleAppender<plog::TxtFormatter> consoleAppender;
-    plog::init(plog::info, &fileAppender).addAppender(&consoleAppender);
-
     auto state = std::make_shared<AppState>();
     Indexer<IntId, MockDbConnection> indexer(state, storage);
     indexer.Run();
@@ -104,5 +100,4 @@ TEST_CASE("Indexer tests") {
     REQUIRE(storage->Get("vsegda") == std::set<IntId>{1, 3});
 
   }
-
 }

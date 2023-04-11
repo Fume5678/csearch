@@ -48,8 +48,9 @@ class Indexer {
     std::optional<DataRow<IdT>> data_row;
 
     PLOG_INFO << "Indexer start iterate row!";
-    while(data_row = m_connection->Next(), data_row != std::nullopt){
-      PLOG_INFO << fmt::format("Data row: id {} text [\"{}\"]", data_row->id, data_row->text_data);
+    while (data_row = m_connection->Next(), data_row != std::nullopt) {
+      PLOG_INFO << fmt::format("Data row: id {} text [\"{}\"]", data_row->id,
+                               data_row->text_data);
 
       TextToWords text_to_words(data_row->text_data);
 
@@ -61,7 +62,6 @@ class Indexer {
       }
 
       LOGI << fmt::format("To words: [{}]", log_msg);
-
     };
 
     PLOG_INFO << "Indexer end iterate row!";

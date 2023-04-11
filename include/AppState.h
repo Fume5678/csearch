@@ -5,12 +5,27 @@
 #ifndef STATE_H
 #define STATE_H
 
+#include <optional>
+#include <yaml-cpp/yaml.h>
+#include <plog/Init.h>
+
 namespace anezkasearch {
+
+using Config = YAML::Node;
+constexpr auto ConfigFromFile = &YAML::LoadFile;
 
 class AppState {
  public:
   AppState();
 
+  static bool m_logger_inited;
+
+  std::optional<Config> GetConfig() const;
+
+  void LoadConfig(std::string path);
+
+ private:
+  std::optional<Config> m_config;
 };
 
 }  // namespace anezkasearch

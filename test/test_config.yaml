@@ -1,5 +1,10 @@
 version: "0.1"
-service:
+
+app:
+  host: 127.0.0.1
+  port: 55001
+
+indexer:
   source: postgres
   url: localhost
   user: root

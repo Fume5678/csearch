@@ -6,22 +6,19 @@
 
 #include <IndexStorage.h>
 #include <cstdint>
+#include <functional>
 #include <ranges>
 #include <set>
-#include <functional>
 #include <string>
 
 using namespace std::literals;
 using namespace anezkasearch;
 
 TEST_CASE("IndexStorage constructing") {
-
   IndexStorage<IntId> index_storage;
-
 }
 
 TEST_CASE("IndexStorage adding text key") {
-
   IndexStorage<IntId> index_storage;
 
   std::set<IntId> res = index_storage.Get("word");
@@ -37,7 +34,6 @@ TEST_CASE("IndexStorage adding text key") {
 }
 
 TEST_CASE("IndexStorage unique index") {
-
   IndexStorage<IntId> index_storage;
 
   auto key = "word"s;
@@ -78,7 +74,7 @@ TEST_CASE("IndexStorage different removing index") {
 }
 
 //// Template test
-//TEST_CASE("IndexStorage concept constraint wrong indexes") {
-//  IndexStorage<int> index_storage("table_1"); // Ok
-//  IndexStorage<int*> index_storage_2("table_2"); // must not compile
-//}
+// TEST_CASE("IndexStorage concept constraint wrong indexes") {
+//   IndexStorage<int> index_storage("table_1"); // Ok
+//   IndexStorage<int*> index_storage_2("table_2"); // must not compile
+// }
