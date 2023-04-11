@@ -1,0 +1,13 @@
+version: "0.1"
+service:
+  source: postgres
+  url: localhost
+  user: root
+  password: 1324
+  content:
+    table: books
+    index: id
+    key_columns:
+      - "title"
+      - "description"
+

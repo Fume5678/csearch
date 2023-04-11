@@ -1,6 +1,6 @@
 include_guard(GLOBAL)
 
-find_package(libpqxx QUIET)
+find_package(libpqxx 7.7 QUIET)
 if(LIBPQXX_FOUND)
     message("libpqxx found localy")
 
@@ -16,6 +16,7 @@ else()
         )
 
         FetchContent_MakeAvailable(PQXX)
+
     else()
         message(FATAL_ERROR "No libpqxx 7.7. Auto download is disabled")
     endif()
