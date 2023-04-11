@@ -14,6 +14,7 @@ FILE(GLOB_RECURSE TESTS_SRC
     ./testTextToWords.cpp
     ./testIndexer.cpp
     ./testAppState_and_ConfigParser.cpp
+    ./testIndexStorage.cpp
 )
 message(${TESTS_SRC})
 

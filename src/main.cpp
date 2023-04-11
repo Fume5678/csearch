@@ -4,7 +4,6 @@
 #include <vector>
 #include <ranges>
 #include <fmt/core.h>
-#include <cppcoro/generator.hpp>
 #include <AppState.h>
 #include <plog/Appenders/ColorConsoleAppender.h>
 #include <plog/Appenders/RollingFileAppender.h>

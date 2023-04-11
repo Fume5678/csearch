@@ -14,7 +14,6 @@ include(cmake/clang-tidy.cmake)
 include(cmake/find-pqxx.cmake)
 include(cmake/find-fmt.cmake)
 include(cmake/find-plog.cmake)
-include(cmake/find-cppcoro.cmake)
 include(cmake/find-yamlcpp.cmake)
 
 FILE(GLOB_RECURSE ANEZKASEARCH_SRC src/*)
@@ -39,7 +38,6 @@ SET(EXT_LIBRARIES
     PRIVATE pqxx
     PRIVATE fmt::fmt-header-only
     PRIVATE plog
-    PRIVATE cppcoro::cppcoro
     PRIVATE yaml-cpp::yaml-cpp
 )
 target_link_libraries(anezkasearch_exe ${EXT_LIBRARIES})
