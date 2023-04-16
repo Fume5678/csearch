@@ -2,12 +2,12 @@
 // Created by fume on 14.03.23.
 //
 
-#include <TextToWords.h>
 #include <array>
 #include <iostream>
 #include <ranges>
 #include <sstream>
-#include "tests.h"
+#include "testmain.h"
+#include "utils/TextToWords.h"
 
 using namespace anezkasearch;
 

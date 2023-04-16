@@ -6,18 +6,18 @@
 #define ANEZKASEARCH_INDEXER_H
 
 #include <AppState.h>
-#include <DbConnection.h>
+#include <DataRow.h>
 #include <IndexStorage.h>
 #include <fmt/format.h>
 #include <plog/Log.h>
 #include <functional>
 #include <memory>
-#include "TextToWords.h"
+#include "utils/TextToWords.h"
 
 namespace anezkasearch {
 
 template <typename IdT, template <typename> class T>
-concept ConcConnection = requires(T<IdT> val, std::shared_ptr<AppState> state) {
+concept ConcConnection = requires(T<IdT> val, std::shared_ptr<AppState<IdT>> state) {
                            val.Open();
                            val.Close();
                            {
@@ -35,7 +35,7 @@ class Indexer {
     conn->Close();
   };
 
-  Indexer(std::shared_ptr<AppState> app_state,
+  Indexer(std::shared_ptr<AppState<IdT>> app_state,
           std::shared_ptr<IndexStorage<IdT>> index_storage)
       : m_connection(new Connection(app_state), ConnectionDeleter),
         m_app_state(app_state),
@@ -70,7 +70,7 @@ class Indexer {
 
  private:
   std::unique_ptr<Connection, decltype(ConnectionDeleter)> m_connection;
-  std::shared_ptr<AppState> m_app_state = nullptr;
+  std::shared_ptr<AppState<IdT>> m_app_state = nullptr;
   std::shared_ptr<IndexStorage<IdT>> m_index_storage = nullptr;
 };
 

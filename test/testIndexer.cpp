@@ -1,14 +1,14 @@
 //
 // Created by fume on 12.03.23.
 //
-#include "tests.h"
+#include "testmain.h"
 
 #include <memory>
 #include <optional>
 #include <tuple>
 
 #include <AppState.h>
-#include <DbConnection.h>
+#include <DataRow.h>
 #include <IndexStorage.h>
 #include <Indexer.h>
 #include <plog/Appenders/ColorConsoleAppender.h>
@@ -29,7 +29,7 @@ static std::vector data_rows = {
 template <typename IdT>
 class MockDbConnection {
  public:
-  MockDbConnection(std::shared_ptr<AppState> state) {
+  MockDbConnection(std::shared_ptr<AppState<IdT>> state) {
     init_count++;
   }
 
@@ -79,7 +79,7 @@ TEST_CASE("Indexer tests") {
   auto storage = std::make_shared<IndexStorage<IntId>>();
 
   SECTION("initialization and closing") {
-    auto state = std::make_shared<AppState>();
+    auto state = std::make_shared<AppState<IntId>>();
     Indexer<IntId, MockDbConnection> indexer(state, storage);
     CHECK(MockDbConnection<IntId>::init_count == 1);
     CHECK(MockDbConnection<IntId>::open_count == 0);
@@ -88,7 +88,7 @@ TEST_CASE("Indexer tests") {
 
   MockDbConnection<IntId>::reset_static();
   SECTION("run indexing") {
-    auto state = std::make_shared<AppState>();
+    auto state = std::make_shared<AppState<IntId>>();
     Indexer<IntId, MockDbConnection> indexer(state, storage);
     indexer.Run();
     CHECK(MockDbConnection<IntId>::init_count == 1);

@@ -2,11 +2,11 @@
 // Created by fume on 13.03.23.
 //
 
-#ifndef ANEZKASEARCH_DBCONNECTION_H
-#define ANEZKASEARCH_DBCONNECTION_H
+#ifndef ANEZKASEARCH_DATAROW_H
+#define ANEZKASEARCH_DATAROW_H
 
+#include <DataIds.h>
 #include <optional>
-#include <DataIDs.h>
 
 namespace anezkasearch {
 
@@ -19,4 +19,4 @@ class DataRow {
 };
 
 } // namespace anezkasearch
-#endif  // ANEZKASEARCH_DBCONNECTION_H
+#endif  // ANEZKASEARCH_DATAROW_H

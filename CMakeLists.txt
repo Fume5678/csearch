@@ -16,9 +16,9 @@ include(cmake/find-fmt.cmake)
 include(cmake/find-plog.cmake)
 include(cmake/find-yamlcpp.cmake)
 
-FILE(GLOB_RECURSE ANEZKASEARCH_SRC src/*)
+FILE(GLOB_RECURSE ANEZKASEARCH_SRC src/* src/utils/*)
 
-add_executable(anezkasearch_exe ${ANEZKASEARCH_SRC} src/main.cpp)
+add_executable(anezkasearch_exe ${ANEZKASEARCH_SRC})
 set_property(TARGET anezkasearch_exe PROPERTY OUTPUT_NAME anezkasearch)
 target_compile_options(
     anezkasearch_exe

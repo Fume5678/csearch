@@ -4,13 +4,13 @@ option(DOWNLOAD_DEPENDENCIES "Allow cmake download dependencies library" ON)
 option(ENABLED_BENCHMARK "Enable benchmark tests" OFF)
 
 FILE(GLOB_RECURSE ANEZKASEARCH_SRC
-    ../src/TextToWords.cpp
+    ../src/utils/TextToWords.cpp
     ../src/IndexStorage.cpp
     ../src/Indexer.cpp
     ../src/AppState.cpp
     )
 FILE(GLOB_RECURSE TESTS_SRC
-    ./testmain.cpp.cpp
+    ./testmain.cpp
     ./testTextToWords.cpp
     ./testIndexer.cpp
     ./testAppState_and_ConfigParser.cpp

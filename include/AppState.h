@@ -5,25 +5,56 @@
 #ifndef STATE_H
 #define STATE_H
 
-#include <optional>
+#include <fmt/core.h>
+#include <plog/Appenders/ColorConsoleAppender.h>
+#include <plog/Appenders/RollingFileAppender.h>
+#include <plog/Initializers/RollingFileInitializer.h>
+#include <plog/Log.h>
 #include <yaml-cpp/yaml.h>
-#include <plog/Init.h>
+#include <memory>
+#include <optional>
+
+#include <DataIds.h>
+#include <IndexStorage.h>
 
 namespace anezkasearch {
 
 using Config = YAML::Node;
 constexpr auto ConfigFromFile = &YAML::LoadFile;
 
+template <typename IndT>
+  requires ConcIndType<IndT>
 class AppState {
+  inline void init() {
+    LOGI << "Initializaion AppState";
+    m_index_storage = std::make_shared<IndexStorage<IndT>>();
+  }
+
+  inline static void InitLog() {
+    static plog::ColorConsoleAppender<plog::TxtFormatter> consoleAppender;
+    plog::init(plog::info, &consoleAppender);
+  }
+
  public:
-  AppState();
+  AppState() {
+    InitLog();
+  }
 
-  static void InitLog();
-  std::optional<Config> GetConfig() const;
+  AppState(Config& config) : m_config{config} {
+    InitLog();
+    init();
+  }
 
-  void LoadConfig(std::string path);
+  inline std::optional<Config> GetConfig() const {
+    return m_config;
+  }
+
+  inline std::weak_ptr<IndexStorage<IndT>> GetWeakIndexStorage() {
+    return m_index_storage;
+  }
 
  private:
+  std::shared_ptr<IndexStorage<IndT>> m_index_storage;
   std::optional<Config> m_config;
 };
 

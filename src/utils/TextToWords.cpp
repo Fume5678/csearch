@@ -2,7 +2,7 @@
 // Created by fume on 14.03.23.
 //
 
-#include <TextToWords.h>
+#include "utils/TextToWords.h"
 
 namespace anezkasearch {
 

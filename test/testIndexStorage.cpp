@@ -2,7 +2,7 @@
 // Created by fume on 08.03.23.
 //
 
-#include "tests.h"
+#include "testmain.h"
 
 #include <IndexStorage.h>
 #include <cstdint>
@@ -34,7 +34,7 @@ TEST_CASE("IndexStorage adding text key") {
 }
 
 TEST_CASE("IndexStorage unique index") {
-  IndexStorage<IntId> index_storage;
+  IndexStorage<IntId>  index_storage;
 
   auto key = "word"s;
   index_storage.Insert("word", 123);

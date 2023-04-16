@@ -13,12 +13,13 @@
 #include <unordered_map>
 #include <vector>
 
-#include <DataIDs.h>
+#include <DataIds.h>
 
 namespace anezkasearch {
 
 template <typename IdT>
 using IndexMap = std::unordered_map<std::string, std::set<IdT> >;
+
 
 template <typename IdT>
   requires ConcIndType<IdT>
@@ -54,6 +55,10 @@ class IndexStorage {
     for (auto& [k, s] : m_index_storage) {
       s.erase(ind);
     }
+  }
+
+  void Size(){
+    return m_index_storage.size();
   }
 
  private:

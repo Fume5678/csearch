@@ -2,7 +2,7 @@
 // Created by fume on 15.03.23.
 //
 
-#include "tests.h"
+#include "testmain.h"
 
 #ifdef ENABLED_BENCHMARK
 #include <IndexStorage.h>
