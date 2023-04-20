@@ -1,13 +1,14 @@
-include(../cmake/find-catch2.cmake)
 
 option(DOWNLOAD_DEPENDENCIES "Allow cmake download dependencies library" ON)
 option(ENABLED_BENCHMARK "Enable benchmark tests" OFF)
 
+include(${CMAKE_SOURCE_DIR}/cmake/find-catch2.cmake)
+
 FILE(GLOB_RECURSE ANEZKASEARCH_SRC
-    ../src/utils/TextToWords.cpp
-    ../src/IndexStorage.cpp
-    ../src/Indexer.cpp
-    ../src/AppState.cpp
+    ${CMAKE_SOURCE_DIR}/src/utils/TextToWords.cpp
+    ${CMAKE_SOURCE_DIR}/src/IndexStorage.cpp
+    ${CMAKE_SOURCE_DIR}/src/Indexer.cpp
+    ${CMAKE_SOURCE_DIR}/src/AppState.cpp
     )
 FILE(GLOB_RECURSE TESTS_SRC
     ./testmain.cpp
@@ -30,7 +31,7 @@ target_compile_options(
     PRIVATE -Wno-ignored-attributes
     PRIVATE -Wno-unused-but-set-variable
 )
-target_include_directories(anezkasearch_tests PRIVATE ../include)
+target_include_directories(anezkasearch_tests PRIVATE ${CMAKE_SOURCE_DIR}/include)
 target_link_libraries(anezkasearch_tests PRIVATE Catch2::Catch2WithMain)
 target_link_libraries(anezkasearch_tests PRIVATE ${EXT_LIBRARIES})
 

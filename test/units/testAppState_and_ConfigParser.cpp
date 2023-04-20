@@ -20,7 +20,7 @@ using namespace YAML;
 
 TEST_CASE("Parsing config") {
   // TODO change absolute test_config path to relative path
-  YAML::Node config = YAML::LoadFile("/home/fume/projects/cpp/anezkasearch/test/test_config.yaml");
+  YAML::Node config = YAML::LoadFile("/home/fume/projects/cpp/anezkasearch/test/units/test_config.yaml");
 
   REQUIRE(config);
   REQUIRE(config["version"].as<std::string>() == "0.1");
@@ -31,7 +31,7 @@ TEST_CASE("Parsing config") {
 }
 
 TEST_CASE("AppState loading"){
-  YAML::Node config = YAML::LoadFile("/home/fume/projects/cpp/anezkasearch/test/test_config.yaml");
+  YAML::Node config = YAML::LoadFile("/home/fume/projects/cpp/anezkasearch/test/units/test_config.yaml");
 
   // Id is parsed from config
   AppState<IntId> state(config);
@@ -44,7 +44,7 @@ TEST_CASE("AppState loading"){
 }
 
 TEST_CASE("AppState owns indexStorage"){
-  YAML::Node config = YAML::LoadFile("/home/fume/projects/cpp/anezkasearch/test/test_config.yaml");
+  YAML::Node config = YAML::LoadFile("/home/fume/projects/cpp/anezkasearch/test/units/test_config.yaml");
 
   AppState<IntId> state(config);
   CHECK(state.GetConfig().value()["version"].as<std::string>() == "0.1");

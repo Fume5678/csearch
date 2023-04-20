@@ -1,3 +1,7 @@
 [submodule "external/cppcoro"]
 	path = external/cppcoro
 	url = https://github.com/andreasbuhr/cppcoro.git
+[submodule "external/grpc"]
+	path = external/grpc
+	url = https://github.com/grpc/grpc
+	branch = v1.54.x

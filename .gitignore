@@ -9,4 +9,6 @@ prefix/
 CMakeLists.txt.user
 CMakeUserPresets.json
 test_data
+protos-gen/
+external/
 

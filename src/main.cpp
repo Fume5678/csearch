@@ -15,7 +15,6 @@ int main() {
   plog::ColorConsoleAppender<plog::TxtFormatter> consoleAppender;
   plog::init(plog::info, &fileAppender).addAppender(&consoleAppender);
 
-  anezkasearch::AppState state;
 
   LOGI << "Hello, world!";
 
