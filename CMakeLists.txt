@@ -16,9 +16,14 @@ include(cmake/find-fmt.cmake)
 include(cmake/find-plog.cmake)
 include(cmake/find-yamlcpp.cmake)
 
-FILE(GLOB_RECURSE ANEZKASEARCH_SRC src/* src/utils/*)
+add_subdirectory(external/grpc)
 
-add_executable(anezkasearch_exe ${ANEZKASEARCH_SRC})
+FILE(GLOB_RECURSE ANEZKASEARCH_SRC src/* src/utils/*)
+#grpc protos
+FILE(GLOB_RECURSE GRPC_PROTO_SRC ./protos-gen/*.grpc.pb.cc)
+FILE(GLOB_RECURSE GRPC_MGS_SRC ./protos-gen/*.pb.cc)
+
+add_executable(anezkasearch_exe ${ANEZKASEARCH_SRC}  ${GRPC_PROTO_SRC} ${GRPC_MGS_SRC})
 set_property(TARGET anezkasearch_exe PROPERTY OUTPUT_NAME anezkasearch)
 target_compile_options(
     anezkasearch_exe
@@ -32,6 +37,7 @@ target_compile_options(
 )
 target_compile_features(anezkasearch_exe PRIVATE cxx_std_20)
 target_include_directories(anezkasearch_exe PRIVATE include)
+target_include_directories(anezkasearch_exe PRIVATE protos-gen)
 
 # target link libraries
 SET(EXT_LIBRARIES
@@ -40,7 +46,7 @@ SET(EXT_LIBRARIES
     PRIVATE plog
     PRIVATE yaml-cpp::yaml-cpp
 )
-target_link_libraries(anezkasearch_exe ${EXT_LIBRARIES})
+target_link_libraries(anezkasearch_exe ${EXT_LIBRARIES} grpc++)
 
 # test
-add_subdirectory(test)
+add_subdirectory(test/units)
