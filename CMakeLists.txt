@@ -38,6 +38,7 @@ target_compile_options(
 target_compile_features(anezkasearch_exe PRIVATE cxx_std_20)
 target_include_directories(anezkasearch_exe PRIVATE include)
 target_include_directories(anezkasearch_exe PRIVATE protos-gen)
+target_include_directories(anezkasearch_exe PRIVATE external)
 
 # target link libraries
 SET(EXT_LIBRARIES

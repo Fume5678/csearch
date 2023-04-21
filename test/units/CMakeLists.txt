@@ -14,7 +14,7 @@ FILE(GLOB_RECURSE TESTS_SRC
     ./testmain.cpp
     ./testTextToWords.cpp
     ./testIndexer.cpp
-    ./testAppState_and_ConfigParser.cpp
+    "test AppState_and_ConfigParser.cpp"
     ./testIndexStorage.cpp
 )
 message(${TESTS_SRC})
@@ -32,8 +32,10 @@ target_compile_options(
     PRIVATE -Wno-unused-but-set-variable
 )
 target_include_directories(anezkasearch_tests PRIVATE ${CMAKE_SOURCE_DIR}/include)
+target_include_directories(anezkasearch_tests PRIVATE ${CMAKE_SOURCE_DIR}/external)
 target_link_libraries(anezkasearch_tests PRIVATE Catch2::Catch2WithMain)
 target_link_libraries(anezkasearch_tests PRIVATE ${EXT_LIBRARIES})
+
 
 if(ENABLED_BENCHMARK)
     target_compile_definitions(anezkasearch_tests PRIVATE ENABLED_BENCHMARK)
