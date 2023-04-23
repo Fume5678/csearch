@@ -5,18 +5,13 @@
 #include <ranges>
 #include <fmt/core.h>
 #include <AppState.h>
-#include <plog/Appenders/ColorConsoleAppender.h>
-#include <plog/Appenders/RollingFileAppender.h>
-#include <plog/Initializers/RollingFileInitializer.h>
-#include <plog/Log.h>
+#include <cxxopts/cxxopts.hpp>
+#include <hello.grpc.pb.h>
 
-int main() {
-  plog::RollingFileAppender<plog::CsvFormatter> fileAppender("log.csv", 8000, 1);
-  plog::ColorConsoleAppender<plog::TxtFormatter> consoleAppender;
-  plog::init(plog::info, &fileAppender).addAppender(&consoleAppender);
+using namespace anezkasearch;
 
+int main(int argc, char** argv) {
 
-  LOGI << "Hello, world!";
-
+  AppState<IntId> state;
   return 0;
 }

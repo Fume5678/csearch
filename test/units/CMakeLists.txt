@@ -12,10 +12,10 @@ FILE(GLOB_RECURSE ANEZKASEARCH_SRC
     )
 FILE(GLOB_RECURSE TESTS_SRC
     ./testmain.cpp
-    ./testTextToWords.cpp
-    ./testIndexer.cpp
-    "test AppState_and_ConfigParser.cpp"
-    ./testIndexStorage.cpp
+    ./test_TextToWords.cpp
+    ./test_Indexer.cpp
+    ./test_AppState_and_ConfigParser.cpp
+    ./test_IndexStorage.cpp
 )
 message(${TESTS_SRC})
 
@@ -28,6 +28,7 @@ target_compile_options(
     PRIVATE -Wextra
     PRIVATE -Wno-unused-parameter
     PRIVATE -Wno-unused-variable
+    PRIVATE -Wno-unused-value
     PRIVATE -Wno-ignored-attributes
     PRIVATE -Wno-unused-but-set-variable
 )

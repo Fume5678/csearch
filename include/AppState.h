@@ -11,6 +11,8 @@
 #include <plog/Initializers/RollingFileInitializer.h>
 #include <plog/Log.h>
 #include <yaml-cpp/yaml.h>
+#include <cxxopts/cxxopts.hpp>
+
 #include <memory>
 #include <optional>
 
@@ -22,10 +24,13 @@ namespace anezkasearch {
 using Config = YAML::Node;
 constexpr auto ConfigFromFile = &YAML::LoadFile;
 
+using CommArgs = cxxopts::ParseResult;
+
 template <typename IndT>
   requires ConcIndType<IndT>
 class AppState {
   inline void init() {
+    InitLog();
     LOGI << "Initializaion AppState";
     m_index_storage = std::make_shared<IndexStorage<IndT>>();
   }
@@ -36,13 +41,16 @@ class AppState {
   }
 
  public:
-  AppState() {
-    InitLog();
+  AppState(CommArgs options): m_args{options} {
+    init();
   }
 
-  AppState(Config& config) : m_config{config} {
-    InitLog();
+  AppState(CommArgs options, Config& config) : m_config{config}, m_args{options}{
     init();
+  }
+
+  inline CommArgs GetArgs(){
+    return m_args;
   }
 
   inline std::optional<Config> GetConfig() const {
@@ -56,6 +64,7 @@ class AppState {
  private:
   std::shared_ptr<IndexStorage<IndT>> m_index_storage;
   std::optional<Config> m_config;
+  CommArgs m_args;
 };
 
 }  // namespace anezkasearch
