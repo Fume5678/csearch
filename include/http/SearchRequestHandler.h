@@ -1,0 +1,10 @@
+//
+// Created by fume on 27.04.23.
+//
+
+#ifndef ANEZKASEARCH_SEARCHREQUESTHANDLER_H
+#define ANEZKASEARCH_SEARCHREQUESTHANDLER_H
+
+class SearchRequestHandler {};
+
+#endif  // ANEZKASEARCH_SEARCHREQUESTHANDLER_H

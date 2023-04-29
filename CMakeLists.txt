@@ -23,7 +23,7 @@ FILE(GLOB_RECURSE ANEZKASEARCH_SRC src/* src/utils/*)
 FILE(GLOB_RECURSE GRPC_PROTO_SRC ./protos-gen/*.grpc.pb.cc)
 FILE(GLOB_RECURSE GRPC_MGS_SRC ./protos-gen/*.pb.cc)
 
-add_executable(anezkasearch_exe ${ANEZKASEARCH_SRC}  ${GRPC_PROTO_SRC} ${GRPC_MGS_SRC})
+add_executable(anezkasearch_exe ${ANEZKASEARCH_SRC}  ${GRPC_PROTO_SRC} ${GRPC_MGS_SRC} src/http/GrpcServer.cpp include/http/GrpcServer.h src/http/SearchRequestHandler.cpp include/http/SearchRequestHandler.h src/http/GrpcServiceImpl.cpp include/http/GrpcServiceImpl.h)
 set_property(TARGET anezkasearch_exe PROPERTY OUTPUT_NAME anezkasearch)
 target_compile_options(
     anezkasearch_exe
