@@ -9,7 +9,7 @@ Simple search engine for database written on C++20
   git submodule init
   git submodule update --recursive
   
-  mkdir -p build
+  mkdir -p build & cd build
   cmake .. 
   make 
   
