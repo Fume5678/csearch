@@ -3,16 +3,22 @@
 Simple search engine for database written on C++20
 
 
-## build guide
+## Build guide
 ```
   git clone https://github.com/nselyavin/anezkasearch
-  git submodule init
-  git submodule update --recursive
+  
+  # For grpc and its submodules
+  git submodule update --init --recursive
   
   mkdir -p build & cd build
-  cmake .. 
-  make 
+  cmake ..
+  make plugins
   
-  anezkasearch/anezkasearch
+  # Generate protos
+  ../CompileProtos.sh
   
+   make anezkasearch_exe
+  
+  # Run anezkasearch with config file 
+  ./anezkasearch -f anezka-config.yaml
 ```
