@@ -3,14 +3,20 @@
 echo "Start compiling process"
 echo `protoc --version`
 
-protos_path=./protos
-protos_headers_path=./protos-gen
-protos_sources_path=./protos-gen
+grpc_plugin_PATH=$(dirname "$0")/build/external/grpc/grpc_cpp_plugin
+protos_path=$(dirname "$0")/protos
+protos_headers_path=$(dirname "$0")/protos-gen
+protos_sources_path=$(dirname "$0")/protos-gen
+
+echo "grpc_plugin_PATH $grpc_plugin_PATH"
+
+mkdir -p $protos_headers_path
+mkdir -p $protos_sources_path
 
 for protos_file in "$protos_path"/*
 do
     echo Compile: $protos_file
-    protoc -I $protos_path --grpc_out=$protos_headers_path --plugin=protoc-gen-grpc=`which grpc_cpp_plugin` $protos_file
+    protoc -I $protos_path --grpc_out=$protos_headers_path --plugin=protoc-gen-grpc=$grpc_plugin_PATH $protos_file
     protoc -I $protos_path --cpp_out=$protos_headers_path $protos_file
 done
 
