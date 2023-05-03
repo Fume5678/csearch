@@ -21,6 +21,8 @@ class GrpcServer {
 
  private:
   std::shared_ptr<AppState<IndT>> m_state;
+  std::string m_addr;
+  std::shared_ptr
 };
 
 }  // namespace anezkasearch
