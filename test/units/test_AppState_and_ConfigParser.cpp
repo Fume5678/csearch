@@ -34,12 +34,8 @@ TEST_CASE("AppState loading"){
   YAML::Node config = YAML::LoadFile("/home/fume/projects/cpp/anezkasearch/test/units/test_config.yaml");
   // Id is parsed from config
   AppState<IntInd> state(cxxopts::ParseResult(), config);
-  REQUIRE(state.GetConfig() != std::nullopt);
-  REQUIRE(state.GetConfig() != std::nullopt);
-  REQUIRE(state.GetConfig().value()["version"].as<std::string>() == "0.1");
+  REQUIRE(state.GetConfig()["version"].as<std::string>() == "0.1");
 
-  AppState<IntInd> state2({cxxopts::ParseResult()});
-  REQUIRE(state2.GetConfig() == std::nullopt);
 }
 
 TEST_CASE("AppState owns command line args"){
@@ -69,7 +65,7 @@ TEST_CASE("AppState owns indexStorage"){
   YAML::Node config = YAML::LoadFile("/home/fume/projects/cpp/anezkasearch/test/units/test_config.yaml");
 
   AppState<IntInd> state(cxxopts::ParseResult(), config);
-  CHECK(state.GetConfig().value()["version"].as<std::string>() == "0.1");
+  CHECK(state.GetConfig()["version"].as<std::string>() == "0.1");
   REQUIRE(state.GetWeakIndexStorage().use_count() == 1);
   REQUIRE(config["version"].as<std::string>() == "0.1");
 

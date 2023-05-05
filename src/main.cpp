@@ -3,6 +3,7 @@
 //
 #include <AppState.h>
 #include <fmt/core.h>
+#include <http/GrpcServer.h>
 #include <http/GrpcServiceImpl.h>
 #include <cxxopts/cxxopts.hpp>
 #include <ranges>
@@ -11,11 +12,11 @@
 using namespace anezkasearch;
 
 template <typename IndT>
-void RunApp(const CommandArgs& args, const Config& config){
+void RunApp(const CommandArgs& args, Config& config){
   std::shared_ptr state = std::make_shared<AppState<IndT>>(args, config);
 
- 
-
+  GrpcServer grpc_server(state);
+  grpc_server.Run();
 }
 
 int main(int argc, char** argv) {
@@ -34,7 +35,7 @@ int main(int argc, char** argv) {
   if(command_args.count("file") == 0){
     throw std::runtime_error("No input configuration file");
   }
-  const Config config = ConfigFromFile(command_args["file"].as<std::string>());
+  Config config = ConfigFromFile(command_args["file"].as<std::string>());
 
   if(config["data"]["index_type"].as<std::string>() == "int") {
     RunApp<IntInd>(command_args, config);

@@ -9,30 +9,38 @@
 #include <http/SearchRequestHandler.h>
 
 #include <IndexStorage.grpc.pb.h>
+#include <sstream>
+#include <string>
 
 namespace anezkasearch {
 
 template <typename IndT>
 class GrpcServiceImpl : public IndexStorageService::Service {
  public:
+  GrpcServiceImpl(std::shared_ptr<AppState<IndT>> state) : m_state{state}{}
+
   grpc::Status InsertIndex(::grpc::ServerContext* context,
                            const ::anezkasearch::KeyIndexes* request,
                            ::anezkasearch::KeyIndexes* response) {
-    //    if constexpr(std::is_same<IntId, typename
-    //    decltype(*m_state)::value_type>::value) {
-    //      std::cout << "Insert IntId\n";
-    //    }
-    //    if constexpr(std::is_same<StringId, typename
-    //    decltype(*m_state)::value_type>::value) {
-    //      std::cout << "Insert StringId\n";
-    //    }
+    std::stringstream sstr;
+    sstr << "Insert index by key  " <<  request->key() << ": " << " [ " ;
+    for(const auto& ind : request->indexes()){
+      if constexpr (std::is_same<IndT, IntInd>::value){
+        sstr << std::to_string(ind.i_ind()) << ", ";
+      } else {
+        sstr <<ind.s_ind() << ", ";
+      }
+    }
+    sstr << "]" ;
+    LOGI << sstr.str();
 
-    return Service::InsertIndex(context, request, response);
+    return grpc::Status::OK;
   }
 
   grpc::Status GetIndexes(::grpc::ServerContext* context,
                           const ::anezkasearch::KeyIndexes* request,
                           ::anezkasearch::KeyIndexes* response) {
+    LOGI << "Get indexes by key " << request->key();
     return Service::GetIndexes(context, request, response);
   }
 

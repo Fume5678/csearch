@@ -49,19 +49,20 @@ class AppState {
 //    return (m_index_storage);
 //  }
 
+  // TODO remove this constructor
   AppState(const CommandArgs& args): m_args{args} {
     init();
   }
 
-  AppState(const CommandArgs& args, const Config& config) : m_config{config}, m_args{args}{
+  AppState(const CommandArgs& args,  Config& config) : m_config{config}, m_args{args}{
     init();
   }
 
-  inline CommandArgs GetArgs(){
+  inline const CommandArgs& GetArgs(){
     return m_args;
   }
 
-  inline std::optional<Config> GetConfig() const {
+  inline Config& GetConfig() {
     return m_config;
   }
 
@@ -72,7 +73,7 @@ class AppState {
  private:
   IndT type_value{};
   std::shared_ptr<IndexStorage<IndT>> m_index_storage;
-  const std::optional<Config> m_config;
+  Config m_config;
   const CommandArgs m_args;
 };
 
