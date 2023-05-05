@@ -33,12 +33,12 @@ TEST_CASE("Parsing config") {
 TEST_CASE("AppState loading"){
   YAML::Node config = YAML::LoadFile("/home/fume/projects/cpp/anezkasearch/test/units/test_config.yaml");
   // Id is parsed from config
-  AppState<IntId> state(cxxopts::ParseResult(), config);
+  AppState<IntInd> state(cxxopts::ParseResult(), config);
   REQUIRE(state.GetConfig() != std::nullopt);
   REQUIRE(state.GetConfig() != std::nullopt);
   REQUIRE(state.GetConfig().value()["version"].as<std::string>() == "0.1");
 
-  AppState<IntId> state2({cxxopts::ParseResult()});
+  AppState<IntInd> state2({cxxopts::ParseResult()});
   REQUIRE(state2.GetConfig() == std::nullopt);
 }
 
@@ -59,18 +59,16 @@ TEST_CASE("AppState owns command line args"){
   auto file = res["file"].as<std::string>();
   REQUIRE(file == "somefile.yml");
 
-  AppState<IntId> state(res);
+  AppState<IntInd> state(res);
   REQUIRE(state.GetArgs()["log-output"].count() == 0);
 
-
   // Id is parsed from config
-
 }
 
 TEST_CASE("AppState owns indexStorage"){
   YAML::Node config = YAML::LoadFile("/home/fume/projects/cpp/anezkasearch/test/units/test_config.yaml");
 
-  AppState<IntId> state(cxxopts::ParseResult(), config);
+  AppState<IntInd> state(cxxopts::ParseResult(), config);
   CHECK(state.GetConfig().value()["version"].as<std::string>() == "0.1");
   REQUIRE(state.GetWeakIndexStorage().use_count() == 1);
   REQUIRE(config["version"].as<std::string>() == "0.1");

@@ -16,7 +16,7 @@
 #include <memory>
 #include <optional>
 
-#include <DataIds.h>
+#include <Index.h>
 #include <IndexStorage.h>
 
 namespace anezkasearch {
@@ -24,7 +24,8 @@ namespace anezkasearch {
 using Config = YAML::Node;
 constexpr auto ConfigFromFile = &YAML::LoadFile;
 
-using CommArgs = cxxopts::ParseResult;
+using OptionsArgs = cxxopts::Options;
+using CommandArgs = cxxopts::ParseResult;
 
 template <typename IndT>
   requires ConcIndType<IndT>
@@ -41,15 +42,22 @@ class AppState {
   }
 
  public:
-  AppState(CommArgs options): m_args{options} {
+
+  using value_type = IndT;
+//  constexpr operator value_type() const noexcept
+//  {	// return stored value
+//    return (m_index_storage);
+//  }
+
+  AppState(const CommandArgs& args): m_args{args} {
     init();
   }
 
-  AppState(CommArgs options, Config& config) : m_config{config}, m_args{options}{
+  AppState(const CommandArgs& args, const Config& config) : m_config{config}, m_args{args}{
     init();
   }
 
-  inline CommArgs GetArgs(){
+  inline CommandArgs GetArgs(){
     return m_args;
   }
 
@@ -62,9 +70,10 @@ class AppState {
   }
 
  private:
+  IndT type_value{};
   std::shared_ptr<IndexStorage<IndT>> m_index_storage;
-  std::optional<Config> m_config;
-  CommArgs m_args;
+  const std::optional<Config> m_config;
+  const CommandArgs m_args;
 };
 
 }  // namespace anezkasearch

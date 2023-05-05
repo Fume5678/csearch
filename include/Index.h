@@ -2,8 +2,8 @@
 // Created by fume on 13.03.23.
 //
 
-#ifndef ANEZKASEARCH_DATAIDS_H
-#define ANEZKASEARCH_DATAIDS_H
+#ifndef ANEZKASEARCH_INDEX_H
+#define ANEZKASEARCH_INDEX_H
 
 #include <cstdint>
 #include <string>
@@ -11,8 +11,8 @@
 
 namespace anezkasearch {
 
-using IntId = uint64_t;
-using StringId = std::string;
+using IntInd = uint64_t;
+using StringInd = std::string;
 
 template <typename T>
 concept ConcIndType =
@@ -22,6 +22,10 @@ concept ConcIndType =
       typename std::set<T>;
     };
 
+class Index {
+
+};
+
 } // namespace anezkasearch
 
-#endif  //  ANEZKASEARCH_DATAIDS_H
+#endif  //  ANEZKASEARCH_INDEX_H

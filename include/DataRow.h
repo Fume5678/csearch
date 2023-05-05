@@ -5,7 +5,7 @@
 #ifndef ANEZKASEARCH_DATAROW_H
 #define ANEZKASEARCH_DATAROW_H
 
-#include <DataIds.h>
+#include <Index.h>
 #include <optional>
 
 namespace anezkasearch {

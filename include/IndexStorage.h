@@ -13,7 +13,7 @@
 #include <unordered_map>
 #include <vector>
 
-#include <DataIds.h>
+#include <Index.h>
 
 namespace anezkasearch {
 

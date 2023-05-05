@@ -43,14 +43,14 @@ class MockDbConnection {
     close_count++;
   }
 
-  std::optional<DataRow<IntId>> Next() {
+  std::optional<DataRow<IntInd>> Next() {
     next_count++;
 
     if (current_row >= max_rows) {
       return std::nullopt;
     }
 
-    IntId id = std::get<0>(data_rows[current_row]);
+    IntInd id = std::get<0>(data_rows[current_row]);
     std::string text = std::get<1>(data_rows[current_row]);
     text += std::get<2>(data_rows[current_row]);
     current_row++;
@@ -76,28 +76,28 @@ class MockDbConnection {
 };
 
 TEST_CASE("Indexer tests") {
-  auto storage = std::make_shared<IndexStorage<IntId>>();
+  auto storage = std::make_shared<IndexStorage<IntInd>>();
 
   SECTION("initialization and closing") {
-    auto state = std::make_shared<AppState<IntId>>(cxxopts::ParseResult());
-    Indexer<IntId, MockDbConnection> indexer(state, storage);
-    CHECK(MockDbConnection<IntId>::init_count == 1);
-    CHECK(MockDbConnection<IntId>::open_count == 0);
-    REQUIRE(MockDbConnection<IntId>::close_count == 0);
+    auto state = std::make_shared<AppState<IntInd>>(cxxopts::ParseResult());
+    Indexer<IntInd, MockDbConnection> indexer(state, storage);
+    CHECK(MockDbConnection<IntInd>::init_count == 1);
+    CHECK(MockDbConnection<IntInd>::open_count == 0);
+    REQUIRE(MockDbConnection<IntInd>::close_count == 0);
   }
 
-  MockDbConnection<IntId>::reset_static();
+  MockDbConnection<IntInd>::reset_static();
   SECTION("run indexing") {
-    auto state = std::make_shared<AppState<IntId>>(cxxopts::ParseResult());
-    Indexer<IntId, MockDbConnection> indexer(state, storage);
+    auto state = std::make_shared<AppState<IntInd>>(cxxopts::ParseResult());
+    Indexer<IntInd, MockDbConnection> indexer(state, storage);
     indexer.Run();
-    CHECK(MockDbConnection<IntId>::init_count == 1);
-    CHECK(MockDbConnection<IntId>::open_count == 1);
-    CHECK(MockDbConnection<IntId>::close_count == 1);
-    CHECK(MockDbConnection<IntId>::next_count == 4);
+    CHECK(MockDbConnection<IntInd>::init_count == 1);
+    CHECK(MockDbConnection<IntInd>::open_count == 1);
+    CHECK(MockDbConnection<IntInd>::close_count == 1);
+    CHECK(MockDbConnection<IntInd>::next_count == 4);
 
-    REQUIRE(storage->Get("pochemu") == std::set<IntId>{2});
-    REQUIRE(storage->Get("vsegda") == std::set<IntId>{1, 3});
+    REQUIRE(storage->Get("pochemu") == std::set<IntInd>{2});
+    REQUIRE(storage->Get("vsegda") == std::set<IntInd>{1, 3});
 
   }
 }
