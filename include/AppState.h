@@ -36,29 +36,40 @@ class AppState {
     m_index_storage = std::make_shared<IndexStorage<IndT>>();
   }
 
-  inline static void InitLog() {
-    static plog::ColorConsoleAppender<plog::TxtFormatter> consoleAppender;
-    plog::init(plog::info, &consoleAppender);
+  inline void InitLog() {
+    if (!is_log_inited) {
+      static plog::ColorConsoleAppender<plog::TxtFormatter> consoleAppender;
+
+      static plog::RollingFileAppender<plog::CsvFormatter> fileAppender(
+          m_args["log-output"].as<std::string>().c_str(),
+          8000,3);  // Create the 1st appender.
+      plog::init(plog::info, &consoleAppender)
+          .addAppender(&fileAppender);
+
+      is_log_inited = true;
+    }
   }
 
  public:
+  using index_type = IndT;
+  //  constexpr operator value_type() const noexcept
+  //  {	// return stored value
+  //    return (m_index_storage);
+  //  }
 
-  using value_type = IndT;
-//  constexpr operator value_type() const noexcept
-//  {	// return stored value
-//    return (m_index_storage);
-//  }
+  static bool is_log_inited;
 
   // TODO remove this constructor
-  AppState(const CommandArgs& args): m_args{args} {
+  AppState(const CommandArgs& args) : m_args{args} {
     init();
   }
 
-  AppState(const CommandArgs& args,  Config& config) : m_config{config}, m_args{args}{
+  AppState(const CommandArgs& args, Config& config)
+      : m_config{config}, m_args{args} {
     init();
   }
 
-  inline const CommandArgs& GetArgs(){
+  inline const CommandArgs& GetArgs() {
     return m_args;
   }
 
@@ -77,6 +88,8 @@ class AppState {
   const CommandArgs m_args;
 };
 
+template <typename IndT>
+  requires ConcIndType<IndT>
+bool anezkasearch::AppState<IndT>::is_log_inited = false;
 }  // namespace anezkasearch
-
 #endif  // ANEZKASEARCH_STATE_H
