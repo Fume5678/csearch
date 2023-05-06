@@ -44,9 +44,20 @@ class GrpcServiceImpl : public IndexStorageService::Service {
     return Service::GetIndexes(context, request, response);
   }
 
-  grpc::Status RemoveIndex(::grpc::ServerContext* context,
+  grpc::Status RemoveIndexes(::grpc::ServerContext* context,
                            const ::anezkasearch::KeyIndexes* request,
                            ::anezkasearch::KeyIndexes* response) {
+    std::stringstream sstr;
+    sstr << "Remove next indexes [ " ;
+    for(const auto& ind : request->indexes()){
+      if constexpr (std::is_same<IndT, IntInd>::value){
+        sstr << std::to_string(ind.i_ind()) << ", ";
+      } else {
+        sstr <<ind.s_ind() << ", ";
+      }
+    }
+    sstr << "]" ;
+    LOGI << sstr.str();
     return Service::RemoveIndex(context, request, response);
   }
 
