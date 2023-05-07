@@ -16,9 +16,9 @@ syntax = "proto3";
 package anezkasearch;
 
 service IndexStorageService {
-  rpc InsertIndex(KeyIndexes) returns (KeyIndexes);
+  rpc InsertIndex(KeyIndexes) returns (Empty);;
   rpc GetIndexes(KeyIndexes) returns (KeyIndexes);
-  rpc RemoveIndex(KeyIndexes) returns (KeyIndexes);
+  rpc RemoveIndex(KeyIndexes) returns (Empty);
 }
 
 message KeyIndexes {
@@ -33,3 +33,5 @@ message KeyIndexes {
     }
   }
 }
+
+message Empty {}

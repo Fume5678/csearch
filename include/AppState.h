@@ -77,8 +77,12 @@ class AppState {
     return m_config;
   }
 
+  inline std::shared_ptr<IndexStorage<IndT>> GetIndexStorage() {
+    return {m_index_storage};
+  }
+
   inline std::weak_ptr<IndexStorage<IndT>> GetWeakIndexStorage() {
-    return m_index_storage;
+    return {m_index_storage};
   }
 
  private:
