@@ -34,4 +34,20 @@ message KeyIndexes {
   }
 }
 
+message SearchRequest{
+  string text = 1;
+}
+
+message SearchResponse{
+  repeated ToIndex indexes = 1;
+
+  message ToIndex {
+    oneof to{
+      int64 i_ind = 2;
+      string s_ind = 3;
+    }
+  }
+}
+
+
 message Empty {}
