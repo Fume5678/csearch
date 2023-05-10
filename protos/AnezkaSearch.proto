@@ -21,6 +21,10 @@ service IndexStorageService {
   rpc RemoveIndex(KeyIndexes) returns (Empty);
 }
 
+service SearchService {
+  rpc SearchIndex(SearchRequest) returns (SearchResponse);;
+}
+
 message KeyIndexes {
   string key = 1;
 

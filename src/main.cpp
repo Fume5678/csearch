@@ -4,7 +4,7 @@
 #include <AppState.h>
 #include <fmt/core.h>
 #include <http/GrpcServer.h>
-#include <http/GrpcServiceImpl.h>
+#include <http/IndeStorageServiceImpl.h>
 #include <cxxopts/cxxopts.hpp>
 #include <ranges>
 #include <vector>

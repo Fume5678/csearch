@@ -7,7 +7,7 @@
 
 #include <AppState.h>
 #include <grpcpp/server_builder.h>
-#include <http/GrpcServiceImpl.h>
+#include <http/IndeStorageServiceImpl.h>
 
 namespace anezkasearch {
 
@@ -19,7 +19,7 @@ class GrpcServer {
 
   void Run() {
     std::string addr = m_state->GetConfig()["app"]["host"].template as<std::string>();
-    GrpcServiceImpl service(m_state);
+    IndeStorageServiceImpl service(m_state);
     grpc::ServerBuilder builder;
     builder.AddListeningPort(addr, grpc::InsecureServerCredentials());
     builder.RegisterService(&service);
