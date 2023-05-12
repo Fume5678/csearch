@@ -16,24 +16,23 @@ namespace anezkasearch {
 template <typename IndT>
 class SearchServiceImpl : public SearchService::Service {
  public:
-  SearchServiceImpl(std::shared_ptr<AppState<IndT>> state)
-  : m_state{state}{
+  SearchServiceImpl(std::shared_ptr<AppState<IndT>> state) 
+    : m_state{state}, m_handler{state}{
   }
 
   grpc::Status SearchIndex(::grpc::ServerContext* context,
                            const ::anezkasearch::SearchRequest* request,
                            ::anezkasearch::SearchResponse* response) override {
-
     LOGI << "Search request: " << request->text();
 
     // TODO search index
 
-    return Service::SearchIndex(context, request, response);
+    return grpc::Status::OK;
   }
 
  private:
-  SearchRequestHandler handler;
   std::shared_ptr<AppState<IndT>> m_state;
+  SearchRequestHandler<IndT> m_handler;
 };
 
 }  // namespace anezkasearch

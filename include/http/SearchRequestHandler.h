@@ -5,6 +5,23 @@
 #ifndef ANEZKASEARCH_SEARCHREQUESTHANDLER_H
 #define ANEZKASEARCH_SEARCHREQUESTHANDLER_H
 
-class SearchRequestHandler {};
+#include <AppState.h>
+#include <memory>
+
+namespace anezkasearch {
+
+template <typename IndT>
+class SearchRequestHandler {
+ public:
+  SearchRequestHandler(std::shared_ptr<AppState<IndT>> state)
+      : m_state{state}, m_index_storage{state->GetIndexStorage()} {
+  }
+
+ private:
+  std::shared_ptr<AppState<IndT>> m_state;
+  std::shared_ptr<IndexStorage<IndT>> m_index_storage;
+};
+
+}  // namespace anezkasearch
 
 #endif  // ANEZKASEARCH_SEARCHREQUESTHANDLER_H

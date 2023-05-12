@@ -14,9 +14,9 @@
 namespace anezkasearch {
 
 template <typename IndT>
-class IndeStorageServiceImpl : public IndexStorageService::Service {
+class IndexStorageServiceImpl : public IndexStorageService::Service {
  public:
-  IndeStorageServiceImpl(std::shared_ptr<AppState<IndT>> state)
+  IndexStorageServiceImpl(std::shared_ptr<AppState<IndT>> state)
       : m_state{state}, m_index_storage{state->GetIndexStorage()} {
   }
 
