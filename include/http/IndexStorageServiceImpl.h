@@ -20,6 +20,7 @@ class IndexStorageServiceImpl : public IndexStorageService::Service {
       : m_state{state}, m_index_storage{state->GetIndexStorage()} {
   }
 
+  // TODO rename to indexes
   grpc::Status InsertIndex(::grpc::ServerContext* context,
                            const ::anezkasearch::KeyIndexes* request,
                            ::anezkasearch::Empty* response) {
@@ -31,9 +32,11 @@ class IndexStorageServiceImpl : public IndexStorageService::Service {
     for (const auto& ind : request->indexes()) {
       if constexpr (std::is_same<IndT, IntInd>::value) {
         sstr << std::to_string(ind.i_ind()) << ", ";
+        m_index_storage->Insert( request->key(), ind.i_ind());
       }
       else {
         sstr << ind.s_ind() << ", ";
+        m_index_storage->Insert( request->key(), ind.s_ind());
       }
     }
     sstr << "]";
@@ -52,6 +55,7 @@ class IndexStorageServiceImpl : public IndexStorageService::Service {
         response->add_indexes()->set_i_ind(ind);
       }
       else {
+        LOGI << ind;
         response->add_indexes()->set_s_ind(ind);
       }
     }

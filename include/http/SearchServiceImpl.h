@@ -11,6 +11,7 @@
 
 #include <AnezkaSearch.grpc.pb.h>
 
+
 namespace anezkasearch {
 
 template <typename IndT>
@@ -25,7 +26,14 @@ class SearchServiceImpl : public SearchService::Service {
                            ::anezkasearch::SearchResponse* response) override {
     LOGI << "Search request: " << request->text();
 
-    // TODO search index
+    for(const auto& ind : m_handler.GetIndexes(request->text())){
+      if constexpr (std::is_same<IndT, IntInd>::value) {
+        response->add_indexes()->set_i_ind(ind);
+      }
+      else {
+        response->add_indexes()->set_s_ind(ind);
+      }
+    }
 
     return grpc::Status::OK;
   }
@@ -33,6 +41,7 @@ class SearchServiceImpl : public SearchService::Service {
  private:
   std::shared_ptr<AppState<IndT>> m_state;
   SearchRequestHandler<IndT> m_handler;
+
 };
 
 }  // namespace anezkasearch

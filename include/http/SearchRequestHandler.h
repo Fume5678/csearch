@@ -8,6 +8,8 @@
 #include <AppState.h>
 #include <memory>
 
+#include <utils/TextToWords.h>
+
 namespace anezkasearch {
 
 template <typename IndT>
@@ -17,7 +19,30 @@ class SearchRequestHandler {
       : m_state{state}, m_index_storage{state->GetIndexStorage()} {
   }
 
- private:
+  std::set<IndT> GetIndexes(std::string text){
+    TextToWords to_words(text);
+
+    std::set<IndT> indexes = m_index_storage->Get(*to_words);
+    ++to_words;
+    while(to_words){
+      auto row = m_index_storage->Get(*to_words);
+
+      // TODO optimization
+      std::set<IndT> merge_set;
+      for(const auto& it : indexes){
+        if(row.find(it) != row.end()){
+          merge_set.insert(it);
+        }
+      }
+      indexes = merge_set;
+      ++to_words;
+    }
+
+    return indexes;
+  }
+
+
+      private:
   std::shared_ptr<AppState<IndT>> m_state;
   std::shared_ptr<IndexStorage<IndT>> m_index_storage;
 };
