@@ -79,7 +79,9 @@ TEST_CASE("Indexer tests") {
   auto storage = std::make_shared<IndexStorage<IntInd>>();
 
   SECTION("initialization and closing") {
-    auto state = std::make_shared<AppState<IntInd>>(cxxopts::ParseResult());
+    cxxopts::Options options = GetOptions();
+    cxxopts::ParseResult res = options.parse(ARGC, ARGV);
+    auto state = std::make_shared<AppState<IntInd>>(res);
     Indexer<IntInd, MockDbConnection> indexer(state, storage);
     CHECK(MockDbConnection<IntInd>::init_count == 1);
     CHECK(MockDbConnection<IntInd>::open_count == 0);
@@ -88,7 +90,9 @@ TEST_CASE("Indexer tests") {
 
   MockDbConnection<IntInd>::reset_static();
   SECTION("run indexing") {
-    auto state = std::make_shared<AppState<IntInd>>(cxxopts::ParseResult());
+    cxxopts::Options options = GetOptions();
+    cxxopts::ParseResult res = options.parse(ARGC, ARGV);
+    auto state = std::make_shared<AppState<IntInd>>(res);
     Indexer<IntInd, MockDbConnection> indexer(state, storage);
     indexer.Run();
     CHECK(MockDbConnection<IntInd>::init_count == 1);
