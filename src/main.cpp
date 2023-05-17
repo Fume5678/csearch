@@ -19,17 +19,23 @@ void RunApp(const CommandArgs& args, Config& config){
 }
 
 int main(int argc, char** argv) {
-  OptionsArgs options("anezkasearch", "Index search engine");
+  OptionsArgs options("anezkasearch", "Index search engine written on C++");
+  options.custom_help("[OPTION...] -f <filename>");
   options.add_options()
       ("h,help", "Help for commands")
       ("f,file", "Path to config file", cxxopts::value<std::string>())
 #ifdef linux
-          ("log-output", "Path to config file", cxxopts::value<std::string>()->default_value("/var/log/anezka.log"))
+          ("log-output", "Path to config file", cxxopts::value<std::string>()->default_value("./anezka.log"))
 #elif _WIN32
           ("log-output", "Path to config file", cxxopts::value<std::string>()->default_value("./log/anezka.log"))
 #endif
     ;
   const CommandArgs command_args = options.parse(argc, argv);
+
+  if(command_args.count("help") != 0){
+    std::cout << options.help();
+    return 0;
+  }
 
   if(command_args.count("file") == 0){
     throw std::runtime_error("No input configuration file");
