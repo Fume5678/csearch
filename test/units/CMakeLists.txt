@@ -38,6 +38,11 @@ target_link_libraries(anezkasearch_tests PRIVATE Catch2::Catch2WithMain)
 target_link_libraries(anezkasearch_tests PRIVATE ${EXT_LIBRARIES})
 
 
+#FILE(COPY test_config.yaml DESTINATION ${CMAKE_BINARY_DIR})
+
+configure_file(test_config.yaml ${CMAKE_BINARY_DIR}/test/units/test_config.yaml COPYONLY)
+
+
 if(ENABLED_BENCHMARK)
     target_compile_definitions(anezkasearch_tests PRIVATE ENABLED_BENCHMARK)
 endif()

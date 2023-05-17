@@ -20,7 +20,7 @@ using namespace YAML;
 
 TEST_CASE("Parsing config") {
   // TODO change absolute test_config path to relative path
-  YAML::Node config = YAML::LoadFile("/home/fume/projects/cpp/anezkasearch/test/units/test_config.yaml");
+  YAML::Node config = YAML::LoadFile("./test_config.yaml");
 
   REQUIRE(config);
   REQUIRE(config["version"].as<std::string>() == "0.1");
@@ -30,41 +30,23 @@ TEST_CASE("Parsing config") {
   REQUIRE_FALSE(config["bad_tag"].IsDefined());
 }
 
-TEST_CASE("AppState loading"){
-  YAML::Node config = YAML::LoadFile("/home/fume/projects/cpp/anezkasearch/test/units/test_config.yaml");
-  // Id is parsed from config
-  AppState<IntInd> state(cxxopts::ParseResult(), config);
-  REQUIRE(state.GetConfig()["version"].as<std::string>() == "0.1");
-
-}
-
 TEST_CASE("AppState owns command line args"){
-  cxxopts::Options options("AnezkaSearch", "One line description of MyProgram");
-  options.add_options()
-      ("f,file", "Path to config file", cxxopts::value<std::string>())
-#ifdef linux
-      ("log-output", "Path to config file", cxxopts::value<std::string>()->default_value("/var/log/anezka.log"));
-#elif _WIN32
-      ("log-output", "Path to config file", cxxopts::value<std::string>()->default_value("./log/anezka.log"));
-#endif
-
-  int argc = 3;
-  const char* argv[] = {"anezkasearch", "--file", "somefile.yml"};
-
-  cxxopts::ParseResult res = options.parse(argc, argv);
+  cxxopts::Options options = GetOptions();
+  cxxopts::ParseResult res = options.parse(ARGC, ARGV);
   auto file = res["file"].as<std::string>();
   REQUIRE(file == "somefile.yml");
 
   AppState<IntInd> state(res);
-  REQUIRE(state.GetArgs()["log-output"].count() == 0);
+  REQUIRE(state.GetArgs()["log-output"].count() == 1);
 
   // Id is parsed from config
 }
 
 TEST_CASE("AppState owns indexStorage"){
-  YAML::Node config = YAML::LoadFile("/home/fume/projects/cpp/anezkasearch/test/units/test_config.yaml");
-
-  AppState<IntInd> state(cxxopts::ParseResult(), config);
+  cxxopts::Options options = GetOptions();
+  cxxopts::ParseResult res = options.parse(ARGC, ARGV);
+  YAML::Node config = YAML::LoadFile("./test_config.yaml");
+  AppState<IntInd> state(res, config);
   CHECK(state.GetConfig()["version"].as<std::string>() == "0.1");
   REQUIRE(state.GetWeakIndexStorage().use_count() == 1);
   REQUIRE(config["version"].as<std::string>() == "0.1");
