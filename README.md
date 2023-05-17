@@ -12,8 +12,8 @@ Simple search engine for database written on C++20
   
   mkdir -p build & cd build
   cmake ..
-  make plugins
   make protoc
+  make plugins
   
   # Generate protos
   ../CompileProtos.sh
