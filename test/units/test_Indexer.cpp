@@ -100,8 +100,8 @@ TEST_CASE("Indexer tests") {
     CHECK(MockDbConnection<IntInd>::close_count == 1);
     CHECK(MockDbConnection<IntInd>::next_count == 4);
 
-    REQUIRE(storage->Get("pochemu") == std::set<IntInd>{2});
-    REQUIRE(storage->Get("vsegda") == std::set<IntInd>{1, 3});
+    REQUIRE(storage->Get("pochemu") == std::vector<IntInd>{2});
+    REQUIRE(storage->Get("vsegda") == std::vector<IntInd>{1, 3});
 
   }
 }

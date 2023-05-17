@@ -19,12 +19,13 @@ concept ConcIndType =
     !std::is_reference_v<T> &&
     !std::is_pointer_v<T> &&
     requires {
-      typename std::set<T>;
+      typename std::vector<T>;
+    } &&
+    requires (T a, T b){
+      {a < b} -> std::same_as<bool>;
+      {a == b} -> std::same_as<bool>;
+      {a > b} -> std::same_as<bool>;
     };
-
-class Index {
-
-};
 
 } // namespace anezkasearch
 
