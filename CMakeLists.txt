@@ -25,6 +25,7 @@ FILE(GLOB_RECURSE GRPC_MGS_SRC ./protos-gen/*.pb.cc)
 message("GRPC_PROTO_SRC"${GRPC_PROTO_SRC})
 message("GRPC_MGS_SRC"${GRPC_MGS_SRC})
 
+
 add_executable(anezkasearch_exe ${ANEZKASEARCH_SRC} ${GRPC_PROTO_SRC} ${GRPC_MGS_SRC})
 set_property(TARGET anezkasearch_exe PROPERTY OUTPUT_NAME anezkasearch)
 target_compile_options(

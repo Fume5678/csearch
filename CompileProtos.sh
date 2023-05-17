@@ -7,7 +7,7 @@ grpc_plugin_PATH=$(dirname "$0")/build/external/grpc/grpc_cpp_plugin
 protos_path=$(dirname "$0")/protos
 protos_headers_path=$(dirname "$0")/protos-gen
 protos_sources_path=$(dirname "$0")/protos-gen
-protoc=./build/external/grpc/third_party/protobuf/protoc
+protoc=$(dirname "$0")/build/external/grpc/third_party/protobuf/protoc
 
 echo "grpc_plugin_PATH $grpc_plugin_PATH"
 
