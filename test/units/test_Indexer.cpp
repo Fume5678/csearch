@@ -43,7 +43,7 @@ class MockDbConnection {
     close_count++;
   }
 
-  std::optional<DataRow<IntInd>> Next() {
+  std::optional<DataRow<IdT>> Next() {
     next_count++;
 
     if (current_row >= max_rows) {

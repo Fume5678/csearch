@@ -7,7 +7,7 @@
 
 #include <cstdint>
 #include <string>
-#include <set>
+#include <vector>
 
 namespace anezkasearch {
 
