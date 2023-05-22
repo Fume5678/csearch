@@ -16,7 +16,7 @@
 
 namespace anezkasearch {
 
-template <typename IdT, template <typename> class T>
+template <template <typename> class T, typename IdT>
 concept ConcConnection = requires(T<IdT> val, std::shared_ptr<AppState<IdT>> state) {
                            val.Open();
                            val.Close();
@@ -25,8 +25,8 @@ concept ConcConnection = requires(T<IdT> val, std::shared_ptr<AppState<IdT>> sta
                            } -> std::same_as<std::optional<DataRow<IdT>>>;
                          };
 
-template <typename IdT, template <class> class ConnectionT>
-  requires ConcConnection<IdT, ConnectionT>
+template <template <class> class ConnectionT, typename IdT>
+  requires ConcConnection<ConnectionT, IdT>
 class Indexer {
  public:
   using Connection = ConnectionT<IdT>;
@@ -35,11 +35,10 @@ class Indexer {
     conn->Close();
   };
 
-  Indexer(std::shared_ptr<AppState<IdT>> app_state,
-          std::shared_ptr<IndexStorage<IdT>> index_storage)
+  Indexer(std::shared_ptr<AppState<IdT>> app_state)
       : m_connection(new Connection(app_state), ConnectionDeleter),
         m_app_state(app_state),
-        m_index_storage(index_storage) {
+        m_index_storage(app_state->GetIndexStorage()) {
   }
 
   void Run() {

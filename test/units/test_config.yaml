@@ -9,9 +9,11 @@ data:
 
 indexer:
   source: postgres
-  url: localhost
-  user: root
+  host: localhost
+  port: 5432
+  user: postgres
   password: 1324
+  dbname: my_test_db
   content:
     table: books
     index: id

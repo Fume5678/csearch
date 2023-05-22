@@ -76,13 +76,11 @@ class MockDbConnection {
 };
 
 TEST_CASE("Indexer tests") {
-  auto storage = std::make_shared<IndexStorage<IntInd>>();
-
   SECTION("initialization and closing") {
     cxxopts::Options options = GetOptions();
     cxxopts::ParseResult res = options.parse(ARGC, ARGV);
     auto state = std::make_shared<AppState<IntInd>>(res);
-    Indexer<IntInd, MockDbConnection> indexer(state, storage);
+    Indexer<MockDbConnection, AppState<IntInd>::index_type> indexer(state);
     CHECK(MockDbConnection<IntInd>::init_count == 1);
     CHECK(MockDbConnection<IntInd>::open_count == 0);
     REQUIRE(MockDbConnection<IntInd>::close_count == 0);
@@ -93,15 +91,15 @@ TEST_CASE("Indexer tests") {
     cxxopts::Options options = GetOptions();
     cxxopts::ParseResult res = options.parse(ARGC, ARGV);
     auto state = std::make_shared<AppState<IntInd>>(res);
-    Indexer<IntInd, MockDbConnection> indexer(state, storage);
-    indexer.Run();
+    Indexer<MockDbConnection, AppState<IntInd>::index_type> indexer(state);
     CHECK(MockDbConnection<IntInd>::init_count == 1);
     CHECK(MockDbConnection<IntInd>::open_count == 1);
     CHECK(MockDbConnection<IntInd>::close_count == 1);
     CHECK(MockDbConnection<IntInd>::next_count == 4);
 
-    REQUIRE(storage->Get("pochemu") == std::vector<IntInd>{2});
-    REQUIRE(storage->Get("vsegda") == std::vector<IntInd>{1, 3});
-
+    REQUIRE(state->GetWeakIndexStorage().lock()->Get("pochemu") ==
+            std::vector<IntInd>{2});
+    REQUIRE(state->GetWeakIndexStorage().lock()->Get("vsegda") ==
+            std::vector<IntInd>{1, 3});
   }
 }
