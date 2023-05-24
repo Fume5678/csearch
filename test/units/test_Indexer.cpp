@@ -92,6 +92,7 @@ TEST_CASE("Indexer tests") {
     cxxopts::ParseResult res = options.parse(ARGC, ARGV);
     auto state = std::make_shared<AppState<IntInd>>(res);
     Indexer<MockDbConnection, AppState<IntInd>::index_type> indexer(state);
+    indexer.Run();
     CHECK(MockDbConnection<IntInd>::init_count == 1);
     CHECK(MockDbConnection<IntInd>::open_count == 1);
     CHECK(MockDbConnection<IntInd>::close_count == 1);
