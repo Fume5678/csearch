@@ -29,6 +29,8 @@ void RunApp(const CommandArgs& args, Config& config){
 }
 
 int main(int argc, char** argv) {
+  std::setlocale(LC_ALL, "en_US.UTF-8");
+
   OptionsArgs options("anezkasearch", "Index search engine written on C++");
   options.custom_help("[OPTION...] -f <filename>");
   options.add_options()

@@ -10,6 +10,7 @@
 #include <AppState.h>
 #include <DataRow.h>
 #include <pqxx/pqxx>
+#include <utils/Generator.h>
 
 namespace anezkasearch {
 
@@ -65,7 +66,7 @@ class PostgresSource {
     m_conn.reset();
   }
 
-  std::optional<DataRow<IndT>> Next() {
+  Generator<std::optional<DataRow<IndT>>> IterateRows(){
     std::stringstream squery;
     squery << "SELECT " << m_index_column << ", concat(";
     for (size_t i = 0; i < m_text_column.size() - 1; i++) {
@@ -76,11 +77,29 @@ class PostgresSource {
 
     pqxx::work tx{*m_conn};
     for (auto [id, text] : tx.query<IndT, std::string>(squery.str())) {
-      LOGI << id << " " << text;
+      std::optional<DataRow<IndT>> val{{id, text}};
+      co_yield val;
     }
 
-    return std::nullopt;
+    co_return;
   }
+
+//  std::optional<DataRow<IndT>> Next() {
+//    std::stringstream squery;
+//    squery << "SELECT " << m_index_column << ", concat(";
+//    for (size_t i = 0; i < m_text_column.size() - 1; i++) {
+//      squery << m_text_column[i] << ", \' \', ";
+//    }
+//    squery << m_text_column[m_text_column.size() - 1] << ") ";
+//    squery << "FROM " << m_table << ";";
+//
+//    pqxx::work tx{*m_conn};
+//    for (auto [id, text] : tx.query<IndT, std::string>(squery.str())) {
+//      LOGI << id << " " << text;
+//    }
+//
+//    return std::nullopt;
+//  }
 
  private:
   std::shared_ptr<AppState<IndT>> m_state;

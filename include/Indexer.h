@@ -13,6 +13,7 @@
 #include <functional>
 #include <memory>
 #include "utils/TextToWords.h"
+#include "utils/Generator.h"
 
 namespace anezkasearch {
 
@@ -21,8 +22,8 @@ concept ConcConnection = requires(T<IdT> val, std::shared_ptr<AppState<IdT>> sta
                            val.Open();
                            val.Close();
                            {
-                             val.Next()
-                           } -> std::same_as<std::optional<DataRow<IdT>>>;
+                             val.IterateRows()
+                           } -> std::same_as<Generator<std::optional<DataRow<IdT>>>>;
                          };
 
 template <template <class> class ConnectionT, typename IdT>
@@ -44,19 +45,26 @@ class Indexer {
   void Run() {
     m_connection->Open();
 
-    std::optional<DataRow<IdT>> data_row;
+//    std::optional<DataRow<IdT>> data_row;
 
     PLOG_INFO << "Indexer start iterate row!";
-    while (data_row = m_connection->Next(), data_row != std::nullopt) {
-      PLOG_INFO << fmt::format("Data row: id {} text [\"{}\"]", data_row->id,
+    for(const auto& data_row : m_connection->IterateRows() ) {
+      if(data_row == std::nullopt){
+        LOGI << "nullopt returned";
+        continue;
+      }
+      LOGI << fmt::format("Data row: id {} text [\"{}\"]", data_row->id,
                                data_row->text_data);
 
       TextToWords text_to_words(data_row->text_data);
 
       std::string log_msg = "";
+      // Reqrite to generator
       while (text_to_words) {
-        log_msg += text_to_words.Get() + ", ";
-        m_index_storage->Insert(text_to_words.Get(), data_row->id);
+        if (text_to_words.Get().length() > text_to_words.MIN_WORD_LEN) {
+          log_msg += text_to_words.Get() + ", ";
+          m_index_storage->Insert(text_to_words.Get(), data_row->id);
+        }
         text_to_words.Next();
       }
 
