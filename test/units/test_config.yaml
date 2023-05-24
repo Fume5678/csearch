@@ -4,14 +4,16 @@ app:
   host: "0.0.0.0:50051"
 
 data:
-  index_type: string
+  index_type: integer
   min_key_len: 3
 
 indexer:
   source: postgres
-  url: localhost
-  user: root
-  password: 1324
+  host: localhost
+  port: 5432
+  user: postgres
+  password: postgres
+  dbname:  book_db
   content:
     table: books
     index: id

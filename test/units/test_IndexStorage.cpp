@@ -21,7 +21,7 @@ TEST_CASE("IndexStorage constructing") {
 TEST_CASE("IndexStorage adding text key") {
   IndexStorage<IntInd> index_storage;
 
-  std::set<IntInd> res = index_storage.Get("word");
+  const auto res = index_storage.Get("word");
   REQUIRE(res.empty());
 
   auto key = "word"s;
@@ -41,10 +41,45 @@ TEST_CASE("IndexStorage unique index") {
   index_storage.Insert("word", 123);
   const auto indexes = index_storage.Get("word");
 
-  std::vector v_2(indexes.begin(), indexes.end());
-  REQUIRE(v_2.size() == 1);
-  REQUIRE(v_2[0] == 123);
+  REQUIRE(indexes.size() == 1);
+  REQUIRE(indexes[0] == 123);
 }
+
+TEST_CASE("IndexStorage int indexes is sorted") {
+  IndexStorage<IntInd>  index_storage;
+
+  auto key = "word"s;
+  index_storage.Insert("word", 123);
+  index_storage.Insert("word", 124);
+  index_storage.Insert("word", 255);
+  index_storage.Insert("word", 126);
+  const auto indexes = index_storage.Get("word");
+
+  REQUIRE(indexes.size() == 4);
+  REQUIRE(indexes[0] == 123);
+  REQUIRE(indexes[1] == 124);
+  REQUIRE(indexes[2] == 126);
+  REQUIRE(indexes[3] == 255);
+}
+
+TEST_CASE("IndexStorage string indexes is sorted") {
+  IndexStorage<StringInd>  index_storage;
+
+  auto key = "word"s;
+  index_storage.Insert("word", "123");
+  index_storage.Insert("word", "124");
+  index_storage.Insert("word", "255");
+  index_storage.Insert("word", "126");
+  const auto indexes = index_storage.Get("word");
+
+  REQUIRE(indexes.size() == 4);
+  REQUIRE(indexes[0] == "123");
+  REQUIRE(indexes[1] == "124");
+  REQUIRE(indexes[2] == "126");
+  REQUIRE(indexes[3] == "255");
+}
+
+
 
 TEST_CASE("IndexStorage different type of indexes") {
   IndexStorage<StringInd> index_storage_string;

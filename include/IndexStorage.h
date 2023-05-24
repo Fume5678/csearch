@@ -18,8 +18,10 @@
 namespace anezkasearch {
 
 template <typename IdT>
-using IndexMap = std::unordered_map<std::string, std::set<IdT> >;
+using IndexVector = std::vector<IdT>;
 
+template <typename IdT>
+using IndexMap = std::unordered_map<std::string, IndexVector<IdT> >;
 
 template <typename IdT>
   requires ConcIndType<IdT>
@@ -28,7 +30,7 @@ class IndexStorage {
   IndexStorage() {
   }
 
-  std::set<IdT> Get(std::string key) const {
+  IndexVector<IdT> Get(std::string key) const {
     if (not m_index_storage.contains(key)) {
       return {};
     }
@@ -40,7 +42,23 @@ class IndexStorage {
     if (not m_index_storage.contains(key)) {
       m_index_storage.insert({key, {}});
     }
-    m_index_storage[key].insert(ind);
+
+    auto& index_vector = m_index_storage[key];
+
+    if(index_vector.empty() || index_vector.front() > ind){
+      index_vector.insert(index_vector.begin(), ind);
+      return;
+    }
+
+    for(int i = index_vector.size()-1; i >= 0; i-- ){
+      if(index_vector[i] == ind){
+        return;
+      }
+      if(index_vector[i] < ind){
+        index_vector.insert(index_vector.begin() + i + 1, ind);
+        return;
+      }
+    }
   }
 
   void Remove(std::string key) {
@@ -52,8 +70,15 @@ class IndexStorage {
   void RemoveInd(IdT ind) {
     // TODO reverse map, for remembering where index is placed for more fastly
     // ind deleting
-    for (auto& [k, s] : m_index_storage) {
-      s.erase(ind);
+    for (auto& [k, v] : m_index_storage) {
+      for( typename std::vector<IdT>::iterator iter = v.begin(); iter != v.end(); ++iter )
+      {
+        if( *iter == ind )
+        {
+          v.erase( iter );
+          break;
+        }
+      }
     }
   }
 

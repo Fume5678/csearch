@@ -26,6 +26,8 @@ class TextToWords {
   void Next();
   TextToWords& operator++();
 
+  bool IsLetter(char c);
+
   friend std::ostream& operator<<(std::ostream& os,
                                   const TextToWords& text_to_word);
 

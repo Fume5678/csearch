@@ -52,6 +52,7 @@ class AppState {
 
  public:
   using index_type = IndT;
+
   //  constexpr operator value_type() const noexcept
   //  {	// return stored value
   //    return (m_index_storage);

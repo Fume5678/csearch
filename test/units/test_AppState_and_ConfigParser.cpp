@@ -53,3 +53,18 @@ TEST_CASE("AppState owns indexStorage"){
 
   std::vector<int> vec;
 }
+
+constexpr bool is_int_index_type(auto state){
+  return std::same_as<typename decltype(state)::index_type, IntInd>;
+}
+
+TEST_CASE("AppState getting index type"){
+  cxxopts::Options options = GetOptions();
+  cxxopts::ParseResult res = options.parse(ARGC, ARGV);
+  YAML::Node config = YAML::LoadFile("./test_config.yaml");
+  AppState<IntInd> state(res, config);
+  REQUIRE(is_int_index_type(state));
+
+  AppState<StringInd> state2(res, config);
+  REQUIRE(!is_int_index_type(state2));
+}
