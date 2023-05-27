@@ -36,7 +36,6 @@ class Generator {
     }
 
     void return_void() {
-      value = std::nullopt;
     }
     void unhandled_exception(){};
 
@@ -72,6 +71,8 @@ class Generator {
       /* достаем значение напрямую из promise */
       return m_self->m_coro.promise().value;
     }
+
+    // TODO implement manually terminating
 
    private:
     GenIterator(Generator* self) : m_self{self} {

@@ -53,6 +53,22 @@ class Vocabulary
     _SearchWords(current, prefix,words);
   }
 
+  Generator<std::string> SearchWordsSeq(const std::string& prefix) noexcept {
+    TrieNode* current = &root;
+
+    for(size_t i = 0; i < prefix.size(); i++){
+      if(current->children[prefix[i] - 'a']){
+        current = current->children[prefix[i] - 'a'];
+      } else {
+        co_return;
+      }
+    }
+
+    for(auto w : _SearchWordsSeq(current, prefix)){
+      co_yield w;
+    }
+  }
+
   bool Contains(const std::string& key) noexcept {
     TrieNode* current = &root;
 
@@ -69,7 +85,7 @@ class Vocabulary
     }
     return false;
   }
-  
+
 
  private:
   TrieNode root;
@@ -83,6 +99,20 @@ class Vocabulary
     for (size_t i = 0; i < AlphSize; i++) {
       if (current->children[i] != nullptr) {
         _SearchWords(current->children[i], word+current->children[i]->letter, words);
+      }
+    }
+  }
+
+  Generator<std::string> _SearchWordsSeq(Vocabulary::TrieNode* current, std::string word) noexcept {
+    if(current->m_is_end){
+      co_yield word;
+    }
+
+    for (size_t i = 0; i < AlphSize; i++) {
+      if (current->children[i] != nullptr) {
+        for(auto w : _SearchWordsSeq(current->children[i], word+current->children[i]->letter)){
+          co_yield w;
+        }
       }
     }
   }
