@@ -43,7 +43,7 @@ class MockDbConnection {
     close_count++;
   }
 
-  Generator<std::optional<DataRow<IdT>>> IterateRows() {
+  Generator<std::optional<DataRow<IdT>>> IterateRowsSeq() {
     iterate_rows++;
 
     for(int current_row = 0; current_row < max_rows; current_row++) {

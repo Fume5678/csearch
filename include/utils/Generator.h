@@ -6,6 +6,7 @@
 #define ANEZKASEARCH_GENERATOR_H
 
 #include <coroutine>
+#include <optional>
 
 namespace anezkasearch {
 

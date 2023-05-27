@@ -66,7 +66,7 @@ class PostgresSource {
     m_conn.reset();
   }
 
-  Generator<std::optional<DataRow<IndT>>> IterateRows(){
+  Generator<std::optional<DataRow<IndT>>> IterateRowsSeq(){
     std::stringstream squery;
     squery << "SELECT " << m_index_column << ", concat(";
     for (size_t i = 0; i < m_text_column.size() - 1; i++) {

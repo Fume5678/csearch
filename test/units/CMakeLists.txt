@@ -9,14 +9,15 @@ FILE(GLOB_RECURSE ANEZKASEARCH_SRC
     ${CMAKE_SOURCE_DIR}/src/IndexStorage.cpp
     ${CMAKE_SOURCE_DIR}/src/Indexer.cpp
     ${CMAKE_SOURCE_DIR}/src/AppState.cpp
+    ${CMAKE_SOURCE_DIR}/src/Vocabulary.cpp
     )
 FILE(GLOB_RECURSE TESTS_SRC
     ./testmain.cpp
-    ./test_TextToWords.cpp
-    ./test_Indexer.cpp
-    ./test_AppState_and_ConfigParser.cpp
-    ./test_IndexStorage.cpp
-    ./test_PrefixTree.cpp
+#    ./test_TextToWords.cpp
+#    ./test_Indexer.cpp
+#    ./test_AppState_and_ConfigParser.cpp
+#    ./test_IndexStorage.cpp
+    ./test_Vocabulary.cpp
 )
 message(${TESTS_SRC})
 

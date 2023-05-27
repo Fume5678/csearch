@@ -22,7 +22,7 @@ concept ConcConnection = requires(T<IdT> val, std::shared_ptr<AppState<IdT>> sta
                            val.Open();
                            val.Close();
                            {
-                             val.IterateRows()
+                             val.IterateRowsSeq()
                            } -> std::same_as<Generator<std::optional<DataRow<IdT>>>>;
                          };
 
@@ -48,7 +48,7 @@ class Indexer {
 //    std::optional<DataRow<IdT>> data_row;
 
     PLOG_INFO << "Indexer start iterate row!";
-    for(const auto& data_row : m_connection->IterateRows() ) {
+    for(const auto& data_row : m_connection->IterateRowsSeq() ) {
       if(data_row == std::nullopt){
         LOGI << "nullopt returned";
         continue;
