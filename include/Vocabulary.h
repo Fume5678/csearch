@@ -20,12 +20,14 @@ class Vocabulary {
       std::ranges::fill(children, nullptr);
     }
 
-    std::vector<TrieNode*> children;
+    std::vector<std::shared_ptr<TrieNode>> children;
     bool m_is_end{false};
     char letter{'\0'};
   };
 
   explicit Vocabulary(VocabularyLang lang) noexcept;
+
+  ~Vocabulary() noexcept;
 
   void Insert(const std::string& key) noexcept;
 
@@ -36,13 +38,13 @@ class Vocabulary {
   bool Contains(const std::string& key) noexcept;
 
  private:
-  TrieNode m_root;
+  std::shared_ptr<TrieNode> m_root;
   size_t m_alph_size;
 
-  void _SearchWords(Vocabulary::TrieNode* current, std::string word,
+  void _SearchWords(std::shared_ptr<TrieNode> current, std::string word,
                     std::vector<std::string>& words) noexcept;
 
-  Generator<std::string> _SearchWordsSeq(Vocabulary::TrieNode* current,
+  Generator<std::string> _SearchWordsSeq(std::shared_ptr<TrieNode> current,
                                          std::string word) noexcept;
 };
 

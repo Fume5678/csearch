@@ -32,12 +32,8 @@ class Indexer {
  public:
   using Connection = ConnectionT<IdT>;
 
-  std::function<void(Connection*)> ConnectionDeleter = [](Connection* conn) {
-    conn->Close();
-  };
-
   Indexer(std::shared_ptr<AppState<IdT>> app_state)
-      : m_connection(new Connection(app_state), ConnectionDeleter),
+      : m_connection(std::make_unique<Connection>(app_state)),
         m_app_state(app_state),
         m_index_storage(app_state->GetIndexStorage()) {
   }
@@ -76,7 +72,7 @@ class Indexer {
   }
 
  private:
-  std::unique_ptr<Connection, decltype(ConnectionDeleter)> m_connection;
+  std::unique_ptr<Connection> m_connection;
   std::shared_ptr<AppState<IdT>> m_app_state = nullptr;
   std::shared_ptr<IndexStorage<IdT>> m_index_storage = nullptr;
 };

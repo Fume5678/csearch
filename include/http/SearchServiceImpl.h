@@ -38,6 +38,27 @@ class SearchServiceImpl : public SearchService::Service {
     return grpc::Status::OK;
   }
 
+  grpc::Status StreamSuggest(
+      ::grpc::ServerContext* context,
+      ::grpc::ServerReaderWriter<::anezkasearch::SuggestResponse,
+                                 ::anezkasearch::SearchRequest>* stream)
+      override {
+
+    SearchRequest request;
+    stream->Read(&request);
+
+    for(auto word: m_state->GetVocabulary(VocabularyLang::EN)->SearchWordsSeq()){
+      SuggestResponse response;
+      response.set_text(word);
+      if(context->IsCancelled()) {
+        break;
+      }
+      stream->Write(response);
+    }
+
+    return grpc::Status::OK;
+  }
+
  private:
   std::shared_ptr<AppState<IndT>> m_state;
   SearchIndexHandler<IndT> m_handler;

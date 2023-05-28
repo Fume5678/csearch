@@ -16,14 +16,14 @@ Vocabulary::Vocabulary(VocabularyLang lang) noexcept {
       break;
     }
   }
-  m_root.children.resize(m_alph_size);
+  m_root = std::make_shared<TrieNode>(m_alph_size);
 }
 
 void Vocabulary::Insert(const std::string& key) noexcept {
-  TrieNode* current = &m_root;
+  std::shared_ptr<TrieNode> current = m_root;
   for (size_t i = 0; i < key.size(); i++) {
     if (current->children[key.at(i) - 'a'] == NULL) {
-      current->children[key.at(i) - 'a'] = new TrieNode{m_alph_size};
+      current->children[key.at(i) - 'a'] = std::make_shared<TrieNode>(m_alph_size);
       current->children[key.at(i) - 'a']->letter = key.at(i);
     }
     current = current->children[key.at(i) - 'a'];
@@ -33,7 +33,7 @@ void Vocabulary::Insert(const std::string& key) noexcept {
 
 void Vocabulary::SearchWords(const std::string& prefix,
                              std::vector<std::string>& words) noexcept {
-  TrieNode* current = &m_root;
+  std::shared_ptr<TrieNode> current = m_root;
 
   for (size_t i = 0; i < prefix.size(); i++) {
     if (current->children[prefix[i] - 'a']) {
@@ -49,7 +49,7 @@ void Vocabulary::SearchWords(const std::string& prefix,
 
 Generator<std::string> Vocabulary::SearchWordsSeq(
     const std::string& prefix) noexcept {
-  TrieNode* current = &m_root;
+  std::shared_ptr<TrieNode> current = m_root;
 
   for (size_t i = 0; i < prefix.size(); i++) {
     if (current->children[prefix[i] - 'a']) {
@@ -66,7 +66,7 @@ Generator<std::string> Vocabulary::SearchWordsSeq(
 }
 
 bool Vocabulary::Contains(const std::string& key) noexcept {
-  TrieNode* current = &m_root;
+  std::shared_ptr<TrieNode> current = m_root;
 
   for (size_t i = 0; i < key.size(); i++) {
     if (current->children[key[i] - 'a'] != nullptr) {
@@ -83,7 +83,7 @@ bool Vocabulary::Contains(const std::string& key) noexcept {
   return false;
 }
 
-void Vocabulary::_SearchWords(Vocabulary::TrieNode* current, std::string word,
+void Vocabulary::_SearchWords(  std::shared_ptr<TrieNode> current, std::string word,
                               std::vector<std::string>& words) noexcept {
   if (current->m_is_end) {
     words.push_back(word);
@@ -98,7 +98,7 @@ void Vocabulary::_SearchWords(Vocabulary::TrieNode* current, std::string word,
 }
 
 Generator<std::string> Vocabulary::_SearchWordsSeq(
-    Vocabulary::TrieNode* current, std::string word) noexcept {
+    std::shared_ptr<TrieNode> current, std::string word) noexcept {
   if (current->m_is_end) {
     co_yield word;
   }
@@ -111,4 +111,7 @@ Generator<std::string> Vocabulary::_SearchWordsSeq(
       }
     }
   }
+}
+
+Vocabulary::~Vocabulary() noexcept {
 }
