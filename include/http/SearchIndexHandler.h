@@ -27,6 +27,8 @@ class SearchIndexHandler {
       std::vector<std::string> words_row;
       if(text_to_words.Get().length() >= text_to_words.MIN_WORD_LEN){
         words_row.push_back(text_to_words.Get());
+
+        // TODO checking for uniques indexes
         m_state->GetVocabulary(VocabularyLang::EN)->SearchWords(text_to_words.Get(), words_row);
       }
       if(!words_row.empty()) {
