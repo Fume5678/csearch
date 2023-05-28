@@ -44,16 +44,21 @@ class SearchServiceImpl : public SearchService::Service {
                                  ::anezkasearch::SearchRequest>* stream)
       override {
 
-    SearchRequest request;
-    stream->Read(&request);
+    while(!context->IsCancelled()) {
+      SearchRequest request;
+      stream->Read(&request);
 
-    for(auto word: m_state->GetVocabulary(VocabularyLang::EN)->SearchWordsSeq(request.text())){
-      SuggestResponse response;
-      response.set_text(word);
-      if(context->IsCancelled()) {
-        break;
+      if (request.text().length() < 2){
+        continue;
       }
-      stream->Write(response);
+
+      for (auto word : m_state->GetVocabulary(VocabularyLang::EN)
+                           ->SearchWordsSeq(request.text())) {
+        SuggestResponse response;
+        response.set_text(word);
+
+        stream->Write(response);
+      }
     }
 
     return grpc::Status::OK;
