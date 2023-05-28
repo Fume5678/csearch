@@ -10,13 +10,13 @@
 
 namespace anezkasearch {
 
-constexpr size_t EN_SIZE = 26;
+enum class VocabularyLang{ EN, RU };
 
 class Vocabulary {
  public:
   class TrieNode {
    public:
-    TrieNode(size_t alphs_size) : children{alphs_size} {
+    TrieNode(size_t alphs_size = 0) : children{alphs_size} {
       std::ranges::fill(children, nullptr);
     }
 
@@ -25,7 +25,7 @@ class Vocabulary {
     char letter{'\0'};
   };
 
-  explicit Vocabulary(size_t alph_size) noexcept;
+  explicit Vocabulary(VocabularyLang lang) noexcept;
 
   void Insert(const std::string& key) noexcept;
 

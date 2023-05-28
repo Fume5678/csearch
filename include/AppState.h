@@ -18,6 +18,7 @@
 
 #include <Index.h>
 #include <IndexStorage.h>
+#include <Vocabulary.h>
 
 namespace anezkasearch {
 
@@ -41,10 +42,9 @@ class AppState {
       static plog::ColorConsoleAppender<plog::TxtFormatter> consoleAppender;
 
       static plog::RollingFileAppender<plog::CsvFormatter> fileAppender(
-          m_args["log-output"].as<std::string>().c_str(),
-          8000,3);  // Create the 1st appender.
-      plog::init(plog::info, &consoleAppender)
-          .addAppender(&fileAppender);
+          m_args["log-output"].as<std::string>().c_str(), 8000,
+          3);  // Create the 1st appender.
+      plog::init(plog::info, &consoleAppender).addAppender(&fileAppender);
 
       is_log_inited = true;
     }
@@ -52,12 +52,6 @@ class AppState {
 
  public:
   using index_type = IndT;
-
-  //  constexpr operator value_type() const noexcept
-  //  {	// return stored value
-  //    return (m_index_storage);
-  //  }
-
   static bool is_log_inited;
 
   // TODO remove this constructor
@@ -86,9 +80,21 @@ class AppState {
     return {m_index_storage};
   }
 
+  inline std::shared_ptr<Vocabulary> GetVocabulary(VocabularyLang lang) {
+    if(not m_vocabularies.contains(lang)){
+      m_vocabularies.insert({lang, std::make_shared<Vocabulary>(lang)});
+    }
+
+    return {m_vocabularies[lang]};
+  }
+
  private:
   IndT type_value{};
   std::shared_ptr<IndexStorage<IndT>> m_index_storage;
+  //  std::shared_ptr<Vocabulary> m_vocabulary;
+  std::unordered_map<VocabularyLang, std::shared_ptr<Vocabulary>>
+      m_vocabularies;
+
   Config m_config;
   const CommandArgs m_args;
 };

@@ -5,7 +5,7 @@
 using namespace anezkasearch;
 
 TEST_CASE("Vocabulary adding keys and contains method") {
-  Vocabulary vocabulary{EN_SIZE};
+  Vocabulary vocabulary{VocabularyLang::EN};
 
   vocabulary.Insert("walk");
   vocabulary.Insert("wait");
@@ -20,7 +20,7 @@ TEST_CASE("Vocabulary adding keys and contains method") {
 }
 
 TEST_CASE("Vocabulary getting keys by key") {
-  Vocabulary vocabulary{EN_SIZE};
+  Vocabulary vocabulary{VocabularyLang::EN};
   vocabulary.Insert("walk");
   vocabulary.Insert("wait");
   vocabulary.Insert("waitanger");
@@ -37,7 +37,7 @@ TEST_CASE("Vocabulary getting keys by key") {
 }
 
 TEST_CASE("Vocabulary getting keys in generator by key ") {
-  Vocabulary vocabulary{EN_SIZE};
+  Vocabulary vocabulary{VocabularyLang::EN};
   vocabulary.Insert("walk");
   vocabulary.Insert("wait");
   vocabulary.Insert("waitanger");

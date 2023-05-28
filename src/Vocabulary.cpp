@@ -5,8 +5,18 @@
 
 using namespace anezkasearch;
 
-Vocabulary::Vocabulary(size_t alph_size) noexcept
-    : m_root{alph_size}, m_alph_size{alph_size} {
+Vocabulary::Vocabulary(VocabularyLang lang) noexcept {
+  switch (lang) {
+    case VocabularyLang::EN: {
+      m_alph_size = 26;
+      break;
+    }
+    case VocabularyLang::RU: {
+      m_alph_size = 33;
+      break;
+    }
+  }
+  m_root.children.resize(m_alph_size);
 }
 
 void Vocabulary::Insert(const std::string& key) noexcept {

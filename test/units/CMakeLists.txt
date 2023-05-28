@@ -15,7 +15,7 @@ FILE(GLOB_RECURSE TESTS_SRC
     ./testmain.cpp
 #    ./test_TextToWords.cpp
 #    ./test_Indexer.cpp
-#    ./test_AppState_and_ConfigParser.cpp
+    ./test_AppState_and_ConfigParser.cpp
 #    ./test_IndexStorage.cpp
     ./test_Vocabulary.cpp
 )

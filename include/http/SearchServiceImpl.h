@@ -41,7 +41,7 @@ class SearchServiceImpl : public SearchService::Service {
  private:
   std::shared_ptr<AppState<IndT>> m_state;
   SearchIndexHandler<IndT> m_handler;
-  std::shared_ptr<Vocabulary<AlphSize>> m_vocabulary;
+//  std::shared_ptr<Vocabulary> m_vocabulary;
 
 };
 
