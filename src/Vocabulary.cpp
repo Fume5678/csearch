@@ -5,17 +5,7 @@
 
 using namespace anezkasearch;
 
-Vocabulary::Vocabulary(VocabularyLang lang) noexcept {
-  switch (lang) {
-    case VocabularyLang::EN: {
-      m_alph_size = 26;
-      break;
-    }
-    case VocabularyLang::RU: {
-      m_alph_size = 33;
-      break;
-    }
-  }
+Vocabulary::Vocabulary() noexcept {
   m_root = std::make_shared<TrieNode>();
 }
 

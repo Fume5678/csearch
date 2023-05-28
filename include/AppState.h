@@ -28,6 +28,9 @@ constexpr auto ConfigFromFile = &YAML::LoadFile;
 using OptionsArgs = cxxopts::Options;
 using CommandArgs = cxxopts::ParseResult;
 
+// someday more lang will be here
+enum class VocabularyLang {EN};
+
 template <typename IndT>
   requires ConcIndType<IndT>
 class AppState {
@@ -82,7 +85,7 @@ class AppState {
 
   inline std::shared_ptr<Vocabulary> GetVocabulary(VocabularyLang lang) {
     if(not m_vocabularies.contains(lang)){
-      m_vocabularies.insert({lang, std::make_shared<Vocabulary>(lang)});
+      m_vocabularies.insert({lang, std::make_shared<Vocabulary>()});
     }
 
     return {m_vocabularies[lang]};

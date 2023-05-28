@@ -10,9 +10,6 @@
 #include <unordered_map>
 
 namespace anezkasearch {
-
-enum class VocabularyLang{ EN, RU };
-
 class Vocabulary {
  public:
   class TrieNode {
@@ -22,7 +19,7 @@ class Vocabulary {
     char letter{'\0'};
   };
 
-  explicit Vocabulary(VocabularyLang lang) noexcept;
+  explicit Vocabulary() noexcept;
 
   ~Vocabulary() noexcept;
 
