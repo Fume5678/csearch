@@ -2,8 +2,8 @@
 // Created by fume on 27.04.23.
 //
 
-#ifndef ANEZKASEARCH_SEARCHREQUESTHANDLER_H
-#define ANEZKASEARCH_SEARCHREQUESTHANDLER_H
+#ifndef ANEZKASEARCH_SEARCHINDEXHANDLER_H
+#define ANEZKASEARCH_SEARCHINDEXHANDLER_H
 
 #include <AppState.h>
 #include <memory>
@@ -13,9 +13,9 @@
 namespace anezkasearch {
 
 template <typename IndT>
-class SearchRequestHandler {
+class SearchIndexHandler {
  public:
-  SearchRequestHandler(std::shared_ptr<AppState<IndT>> state)
+  SearchIndexHandler(std::shared_ptr<AppState<IndT>> state)
       : m_state{state}, m_index_storage{state->GetIndexStorage()} {
   }
 
@@ -31,4 +31,4 @@ class SearchRequestHandler {
 
 }  // namespace anezkasearch
 
-#endif  // ANEZKASEARCH_SEARCHREQUESTHANDLER_H
+#endif  // ANEZKASEARCH_SEARCHINDEXHANDLER_H

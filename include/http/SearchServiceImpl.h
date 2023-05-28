@@ -6,7 +6,7 @@
 #define ANEZKASEARCH_SEARCHSERVICEIMPL_H
 
 #include <AppState.h>
-#include <http/SearchRequestHandler.h>
+#include <http/SearchIndexHandler.h>
 #include <string>
 
 #include <AnezkaSearch.grpc.pb.h>
@@ -40,7 +40,8 @@ class SearchServiceImpl : public SearchService::Service {
 
  private:
   std::shared_ptr<AppState<IndT>> m_state;
-  SearchRequestHandler<IndT> m_handler;
+  SearchIndexHandler<IndT> m_handler;
+  std::shared_ptr<Vocabulary<AlphSize>> m_vocabulary;
 
 };
 
