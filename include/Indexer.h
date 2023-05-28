@@ -34,14 +34,12 @@ class Indexer {
 
   Indexer(std::shared_ptr<AppState<IdT>> app_state)
       : m_connection(std::make_unique<Connection>(app_state)),
-        m_app_state(app_state),
+        m_state(app_state),
         m_index_storage(app_state->GetIndexStorage()) {
   }
 
   void Run() {
     m_connection->Open();
-
-//    std::optional<DataRow<IdT>> data_row;
 
     PLOG_INFO << "Indexer start iterate row!";
     for(const auto& data_row : m_connection->IterateRowsSeq() ) {
@@ -60,6 +58,7 @@ class Indexer {
         if (text_to_words.Get().length() > text_to_words.MIN_WORD_LEN) {
           log_msg += text_to_words.Get() + ", ";
           m_index_storage->Insert(text_to_words.Get(), data_row->id);
+          m_state->GetVocabulary(VocabularyLang::EN)->Insert(text_to_words.Get());
         }
         text_to_words.Next();
       }
@@ -73,7 +72,7 @@ class Indexer {
 
  private:
   std::unique_ptr<Connection> m_connection;
-  std::shared_ptr<AppState<IdT>> m_app_state = nullptr;
+  std::shared_ptr<AppState<IdT>> m_state = nullptr;
   std::shared_ptr<IndexStorage<IdT>> m_index_storage = nullptr;
 };
 

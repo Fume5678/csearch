@@ -16,17 +16,17 @@ Vocabulary::Vocabulary(VocabularyLang lang) noexcept {
       break;
     }
   }
-  m_root = std::make_shared<TrieNode>(m_alph_size);
+  m_root = std::make_shared<TrieNode>();
 }
 
 void Vocabulary::Insert(const std::string& key) noexcept {
   std::shared_ptr<TrieNode> current = m_root;
   for (size_t i = 0; i < key.size(); i++) {
-    if (current->children[key.at(i) - 'a'] == NULL) {
-      current->children[key.at(i) - 'a'] = std::make_shared<TrieNode>(m_alph_size);
-      current->children[key.at(i) - 'a']->letter = key.at(i);
+    if (not current->children.contains(key.at(i))) {
+      current->children.insert({key.at(i), std::make_shared<TrieNode>()});
+      current->children[key.at(i)]->letter = key.at(i);
     }
-    current = current->children[key.at(i) - 'a'];
+    current = current->children[key.at(i)];
   }
   current->m_is_end = true;
 }
@@ -36,8 +36,8 @@ void Vocabulary::SearchWords(const std::string& prefix,
   std::shared_ptr<TrieNode> current = m_root;
 
   for (size_t i = 0; i < prefix.size(); i++) {
-    if (current->children[prefix[i] - 'a']) {
-      current = current->children[prefix[i] - 'a'];
+    if (current->children[prefix[i]]) {
+      current = current->children[prefix[i]];
     }
     else {
       return;
@@ -52,8 +52,8 @@ Generator<std::string> Vocabulary::SearchWordsSeq(
   std::shared_ptr<TrieNode> current = m_root;
 
   for (size_t i = 0; i < prefix.size(); i++) {
-    if (current->children[prefix[i] - 'a']) {
-      current = current->children[prefix[i] - 'a'];
+    if (current->children[prefix[i]]) {
+      current = current->children[prefix[i]];
     }
     else {
       co_return;
@@ -69,8 +69,8 @@ bool Vocabulary::Contains(const std::string& key) noexcept {
   std::shared_ptr<TrieNode> current = m_root;
 
   for (size_t i = 0; i < key.size(); i++) {
-    if (current->children[key[i] - 'a'] != nullptr) {
-      current = current->children[key[i] - 'a'];
+    if (current->children[key[i]] != nullptr) {
+      current = current->children[key[i]];
     }
     else {
       return false;
@@ -89,10 +89,9 @@ void Vocabulary::_SearchWords(  std::shared_ptr<TrieNode> current, std::string w
     words.push_back(word);
   }
 
-  for (size_t i = 0; i < m_alph_size; i++) {
-    if (current->children[i] != nullptr) {
-      _SearchWords(current->children[i], word + current->children[i]->letter,
-                   words);
+  for (auto [letter, ch] : current->children) {
+    if (ch != nullptr) {
+      _SearchWords(ch, word + ch->letter, words);
     }
   }
 }
@@ -103,10 +102,10 @@ Generator<std::string> Vocabulary::_SearchWordsSeq(
     co_yield word;
   }
 
-  for (size_t i = 0; i < m_alph_size; i++) {
-    if (current->children[i] != nullptr) {
-      for (auto w : _SearchWordsSeq(current->children[i],
-                                    word + current->children[i]->letter)) {
+  for (auto [letter, ch] : current->children) {
+    if (ch != nullptr) {
+      for (auto w : _SearchWordsSeq(ch,
+                                    word + ch->letter)) {
         co_yield w;
       }
     }

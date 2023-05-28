@@ -7,6 +7,7 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include <unordered_map>
 
 namespace anezkasearch {
 
@@ -16,11 +17,7 @@ class Vocabulary {
  public:
   class TrieNode {
    public:
-    TrieNode(size_t alphs_size = 0) : children{alphs_size} {
-      std::ranges::fill(children, nullptr);
-    }
-
-    std::vector<std::shared_ptr<TrieNode>> children;
+    std::unordered_map<int16_t, std::shared_ptr<TrieNode>> children;
     bool m_is_end{false};
     char letter{'\0'};
   };

@@ -47,7 +47,7 @@ class SearchServiceImpl : public SearchService::Service {
     SearchRequest request;
     stream->Read(&request);
 
-    for(auto word: m_state->GetVocabulary(VocabularyLang::EN)->SearchWordsSeq()){
+    for(auto word: m_state->GetVocabulary(VocabularyLang::EN)->SearchWordsSeq(request.text())){
       SuggestResponse response;
       response.set_text(word);
       if(context->IsCancelled()) {

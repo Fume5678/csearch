@@ -66,9 +66,6 @@ bool TextToWords::IsLetter(char c) {
   if(std::isspace(c)){
     return false;
   }
-  if(std::isdigit(c)){
-    return false;
-  }
   if(std::isblank(c)){
     return false;
   }
