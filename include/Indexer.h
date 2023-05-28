@@ -55,7 +55,7 @@ class Indexer {
       std::string log_msg = "";
       // Reqrite to generator
       while (text_to_words) {
-        if (text_to_words.Get().length() > text_to_words.MIN_WORD_LEN) {
+        if (text_to_words.Get().length() >= text_to_words.MIN_WORD_LEN) {
           log_msg += text_to_words.Get() + ", ";
           m_index_storage->Insert(text_to_words.Get(), data_row->id);
           m_state->GetVocabulary(VocabularyLang::EN)->Insert(text_to_words.Get());

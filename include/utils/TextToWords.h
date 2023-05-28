@@ -14,6 +14,7 @@ class TextToWords {
  public:
   TextToWords(std::string_view strv);
 
+  // TODO move to AppState
   const size_t MIN_WORD_LEN = 3;
 
   operator bool();
