@@ -11,6 +11,7 @@
 #include <DataRow.h>
 #include <IndexStorage.h>
 #include <Indexer.h>
+#include <utils/Generator.h>
 #include <plog/Appenders/ColorConsoleAppender.h>
 #include <plog/Appenders/RollingFileAppender.h>
 #include <plog/Initializers/RollingFileInitializer.h>
@@ -35,7 +36,6 @@ class MockDbConnection {
 
   void Open() {
     open_count++;
-    current_row = 0;
     max_rows = data_rows.size();
   }
 
@@ -43,35 +43,36 @@ class MockDbConnection {
     close_count++;
   }
 
-  std::optional<DataRow<IdT>> Next() {
-    next_count++;
+  Generator<std::optional<DataRow<IdT>>> IterateRowsSeq() {
+    iterate_rows++;
 
-    if (current_row >= max_rows) {
-      return std::nullopt;
+    for(int current_row = 0; current_row < max_rows; current_row++) {
+      next_count++;
+      IntInd id = std::get<0>(data_rows[current_row]);
+      std::string text = std::get<1>(data_rows[current_row]);
+      text += std::get<2>(data_rows[current_row]);
+      std::optional<DataRow<IdT>> res{{id, text}};
+      co_yield res;
     }
 
-    IntInd id = std::get<0>(data_rows[current_row]);
-    std::string text = std::get<1>(data_rows[current_row]);
-    text += std::get<2>(data_rows[current_row]);
-    current_row++;
-
-    return {{id, text}};
+    co_return;
   }
 
   static inline int init_count = 0;
   static inline int open_count = 0;
   static inline int close_count = 0;
+  static inline int iterate_rows = 0;
   static inline int next_count = 0;
 
   static void reset_static() {
     init_count = 0;
     open_count = 0;
     close_count = 0;
+    iterate_rows = 0;
     next_count = 0;
   }
 
  private:
-  int current_row{};
   int max_rows{};
 };
 
@@ -96,7 +97,8 @@ TEST_CASE("Indexer tests") {
     CHECK(MockDbConnection<IntInd>::init_count == 1);
     CHECK(MockDbConnection<IntInd>::open_count == 1);
     CHECK(MockDbConnection<IntInd>::close_count == 1);
-    CHECK(MockDbConnection<IntInd>::next_count == 4);
+    CHECK(MockDbConnection<IntInd>::iterate_rows == 1);
+    CHECK(MockDbConnection<IntInd>::next_count == 3);
 
     REQUIRE(state->GetWeakIndexStorage().lock()->Get("pochemu") ==
             std::vector<IntInd>{2});

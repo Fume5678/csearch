@@ -52,6 +52,7 @@ TEST_CASE("AppState owns indexStorage"){
   REQUIRE(config["version"].as<std::string>() == "0.1");
 
   std::vector<int> vec;
+  REQUIRE(state.GetIndexStorage() != nullptr);
 }
 
 constexpr bool is_int_index_type(auto state){
@@ -67,4 +68,13 @@ TEST_CASE("AppState getting index type"){
 
   AppState<StringInd> state2(res, config);
   REQUIRE(!is_int_index_type(state2));
+}
+
+TEST_CASE("AppState owns vocabulary"){
+  cxxopts::Options options = GetOptions();
+  cxxopts::ParseResult res = options.parse(ARGC, ARGV);
+  YAML::Node config = YAML::LoadFile("./test_config.yaml");
+  AppState<IntInd> state(res, config);
+
+  REQUIRE(state.GetVocabulary(VocabularyLang::EN) != nullptr);
 }

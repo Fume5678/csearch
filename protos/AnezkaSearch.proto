@@ -23,6 +23,7 @@ service IndexStorageService {
 
 service SearchService {
   rpc SearchIndex(SearchRequest) returns (SearchResponse);
+  rpc StreamSuggest(stream SearchRequest) returns (stream SuggestResponse);
 }
 
 message KeyIndexes {
@@ -39,6 +40,10 @@ message KeyIndexes {
 }
 
 message SearchRequest{
+  string text = 1;
+}
+
+message SuggestResponse{
   string text = 1;
 }
 

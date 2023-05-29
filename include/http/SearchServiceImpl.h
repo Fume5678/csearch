@@ -6,7 +6,7 @@
 #define ANEZKASEARCH_SEARCHSERVICEIMPL_H
 
 #include <AppState.h>
-#include <http/SearchRequestHandler.h>
+#include <http/SearchIndexHandler.h>
 #include <string>
 
 #include <AnezkaSearch.grpc.pb.h>
@@ -38,9 +38,36 @@ class SearchServiceImpl : public SearchService::Service {
     return grpc::Status::OK;
   }
 
+  grpc::Status StreamSuggest(
+      ::grpc::ServerContext* context,
+      ::grpc::ServerReaderWriter<::anezkasearch::SuggestResponse,
+                                 ::anezkasearch::SearchRequest>* stream)
+      override {
+
+    while(!context->IsCancelled()) {
+      SearchRequest request;
+      stream->Read(&request);
+
+      if (request.text().length() < 2){
+        continue;
+      }
+
+      for (auto word : m_state->GetVocabulary(VocabularyLang::EN)
+                           ->SearchWordsSeq(request.text())) {
+        SuggestResponse response;
+        response.set_text(word);
+
+        stream->Write(response);
+      }
+    }
+
+    return grpc::Status::OK;
+  }
+
  private:
   std::shared_ptr<AppState<IndT>> m_state;
-  SearchRequestHandler<IndT> m_handler;
+  SearchIndexHandler<IndT> m_handler;
+//  std::shared_ptr<Vocabulary> m_vocabulary;
 
 };
 
