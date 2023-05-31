@@ -1,4 +1,5 @@
 # Anezka search
+[![CMake](https://github.com/nselyavin/anezkasearch/actions/workflows/cmake.yml/badge.svg)](https://github.com/nselyavin/anezkasearch/actions/workflows/cmake.yml)
 
 Simple search engine for database written on C++20 with gRPC interface
 
