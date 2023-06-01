@@ -35,8 +35,14 @@ class Indexer {
   Indexer(std::shared_ptr<AppState<IdT>> app_state)
       : m_connection(std::make_unique<Connection>(app_state)),
         m_state(app_state),
-        m_index_storage(app_state->GetIndexStorage()) {
-    m_min_key_len  = m_state->GetConfig()["data"]["min_key_len"].template as<uint32_t>();
+        m_index_storage(app_state->GetIndexStorage()),
+        m_min_key_len{3} {
+    if(m_state->GetConfig()["data"]["min_key_len"].IsDefined()) {
+      m_min_key_len =
+          m_state->GetConfig()["data"]["min_key_len"].template as<uint32_t>();
+    } else {
+      LOGI << "min key size by default: 3";
+    }
   }
 
   void Run() {
@@ -52,18 +58,15 @@ class Indexer {
                                data_row->text_data);
 
       TextToWords text_to_words(data_row->text_data);
-
       std::string log_msg = "";
       // Reqrite to generator
-      while (text_to_words) {
-        if (text_to_words.Get().length() >= m_min_key_len) {
-          log_msg += text_to_words.Get() + ", ";
-          m_index_storage->Insert(text_to_words.Get(), data_row->id);
-          m_state->GetVocabulary(VocabularyLang::EN)->Insert(text_to_words.Get());
+      for(const auto& word : text_to_words.GetWordsSeq()){
+        if (word.length() >= m_min_key_len) {
+          log_msg += word + ", ";
+          m_index_storage->Insert(word, data_row->id);
+          m_state->GetVocabulary(VocabularyLang::EN)->Insert(word);
         }
-        text_to_words.Next();
       }
-
       LOGI << fmt::format("To words: [{}]", log_msg);
     };
 

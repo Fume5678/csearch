@@ -15,27 +15,13 @@ class TextToWords {
  public:
   TextToWords(std::string_view strv);
 
-  // TODO move to AppState
-  operator bool();
-
-  std::string operator*() const;
-  std::string Get() const;
-
-  size_t CurrentIndex() const;
-
-  void Next();
-  TextToWords& operator++();
-
   bool IsLetter(char c);
 
-  friend std::ostream& operator<<(std::ostream& os,
-                                  const TextToWords& text_to_word);
-
+  // Warn: works only with lvalue objects
   Generator<std::string> GetWordsSeq();
 
- private : std::string_view m_strv;
-  std::string m_word;
-  size_t m_current_ind;
+ private :
+  std::string_view m_text;
 };
 
 }  // namespace anezkasearch

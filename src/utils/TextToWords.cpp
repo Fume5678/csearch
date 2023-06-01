@@ -9,24 +9,30 @@
 namespace anezkasearch {
 
 TextToWords::TextToWords(std::string_view strv)
-    : m_strv(strv), m_word(""), m_current_ind(0) {
+    : m_text(strv) {
 }
 
 Generator<std::string> TextToWords::GetWordsSeq() {
-  m_word = "";
+  std::string word = "";
   bool is_word = false;
 
-  for (; m_current_ind < m_strv.size(); m_current_ind++) {
-    if (IsLetter(m_strv[m_current_ind])) {
-      is_word = true;
-      char c  = std::tolower(m_strv[m_current_ind]);
-      m_word.push_back(c);
+  for (size_t i = 0; i < m_text.size()+1; i++) {
+    if (i == m_text.size()){
+      if(is_word){
+        co_yield word;
+      }
     }
 
-    if (!IsLetter(m_strv[m_current_ind]) && is_word) {
+    if (IsLetter(m_text[i])) {
+      is_word = true;
+      char c  = std::tolower(m_text[i]);
+      word.push_back(c);
+    }
+
+    if (!IsLetter(m_text[i]) && is_word) {
       is_word = false;
-      co_yield m_word;
-      m_word = "";
+      co_yield word;
+      word = "";
     }
   }
 }

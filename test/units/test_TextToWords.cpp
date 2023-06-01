@@ -25,7 +25,7 @@ TEST_CASE("TextToWords") {
     TextToWords text_word(text);
     int count = 0;
     for(const auto& word:  text_word.GetWordsSeq()) {
-      CHECK(word == arr_words[count]);
+      REQUIRE(word == arr_words[count]);
       count++;
     }
   }

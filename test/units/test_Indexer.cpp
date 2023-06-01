@@ -80,10 +80,11 @@ TEST_CASE("Indexer tests") {
   SECTION("initialization and closing") {
     cxxopts::Options options = GetOptions();
     cxxopts::ParseResult res = options.parse(ARGC, ARGV);
-    auto state = std::make_shared<AppState<IntInd>>(res);
+    YAML::Node config = YAML::LoadFile("./test_config.yaml");
+    auto state = std::make_shared<AppState<IntInd>>(res, config);
     Indexer<MockDbConnection, AppState<IntInd>::index_type> indexer(state);
-    CHECK(MockDbConnection<IntInd>::init_count == 1);
-    CHECK(MockDbConnection<IntInd>::open_count == 0);
+    REQUIRE(MockDbConnection<IntInd>::init_count == 1);
+    REQUIRE(MockDbConnection<IntInd>::open_count == 0);
     REQUIRE(MockDbConnection<IntInd>::close_count == 0);
   }
 
@@ -91,14 +92,15 @@ TEST_CASE("Indexer tests") {
   SECTION("run indexing") {
     cxxopts::Options options = GetOptions();
     cxxopts::ParseResult res = options.parse(ARGC, ARGV);
-    auto state = std::make_shared<AppState<IntInd>>(res);
+    YAML::Node config = YAML::LoadFile("./test_config.yaml");
+    auto state = std::make_shared<AppState<IntInd>>(res, config);
     Indexer<MockDbConnection, AppState<IntInd>::index_type> indexer(state);
     indexer.Run();
-    CHECK(MockDbConnection<IntInd>::init_count == 1);
-    CHECK(MockDbConnection<IntInd>::open_count == 1);
-    CHECK(MockDbConnection<IntInd>::close_count == 1);
-    CHECK(MockDbConnection<IntInd>::iterate_rows == 1);
-    CHECK(MockDbConnection<IntInd>::next_count == 3);
+    REQUIRE(MockDbConnection<IntInd>::open_count == 1);
+    REQUIRE(MockDbConnection<IntInd>::init_count == 1);
+    REQUIRE(MockDbConnection<IntInd>::close_count == 1);
+    REQUIRE(MockDbConnection<IntInd>::iterate_rows == 1);
+    REQUIRE(MockDbConnection<IntInd>::next_count == 3);
 
     REQUIRE(state->GetWeakIndexStorage().lock()->Get("pochemu") ==
             std::vector<IntInd>{2});
