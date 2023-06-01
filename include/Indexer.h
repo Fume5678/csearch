@@ -36,6 +36,7 @@ class Indexer {
       : m_connection(std::make_unique<Connection>(app_state)),
         m_state(app_state),
         m_index_storage(app_state->GetIndexStorage()) {
+    m_min_key_len  = m_state->GetConfig()["data"]["min_key_len"].template as<uint32_t>();
   }
 
   void Run() {
@@ -55,7 +56,7 @@ class Indexer {
       std::string log_msg = "";
       // Reqrite to generator
       while (text_to_words) {
-        if (text_to_words.Get().length() >= text_to_words.MIN_WORD_LEN) {
+        if (text_to_words.Get().length() >= m_min_key_len) {
           log_msg += text_to_words.Get() + ", ";
           m_index_storage->Insert(text_to_words.Get(), data_row->id);
           m_state->GetVocabulary(VocabularyLang::EN)->Insert(text_to_words.Get());
@@ -74,6 +75,7 @@ class Indexer {
   std::unique_ptr<Connection> m_connection;
   std::shared_ptr<AppState<IdT>> m_state = nullptr;
   std::shared_ptr<IndexStorage<IdT>> m_index_storage = nullptr;
+  size_t m_min_key_len;
 };
 
 }  // namespace anezkasearch

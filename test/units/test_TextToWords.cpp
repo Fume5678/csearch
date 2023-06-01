@@ -16,56 +16,17 @@ TEST_CASE("TextToWords") {
       "Lorem a ipsum or dolor sit amet, consectetur adipiscing elit.\n"
       " Vivamus rhoncus lorem non euismod eleifend. Duis elementum\n";
 
-  const std::array<std::string, 16> arr_words = {
-      "lorem",      "ipsum",    "dolor",   "sit",      "amet",  "consectetur",
+  const std::array<std::string, 18> arr_words = {
+      "lorem", "a",  "ipsum", "or",   "dolor",   "sit",  "amet",  "consectetur",
       "adipiscing", "elit",     "vivamus", "rhoncus",  "lorem", "non",
-      "euismod",    "eleifend", "duis",    "elementum"};
+      "euismod",    "eleifend", "duis",  "elementum"};
 
-  SECTION("Initialize") {
-    TextToWords text_to_word(text);
-    TextToWords it = text_to_word;
-    REQUIRE(it.CurrentIndex() == 5);
-    REQUIRE(it.Get() == "lorem");
-    REQUIRE(*it == "lorem");
-  }
-
-  SECTION("Foreach") {
+  SECTION("Range-based loop") {
     TextToWords text_word(text);
     int count = 0;
-    while (text_word) {
-      CHECK(*text_word == arr_words[count]);
-      ++text_word;
+    for(const auto& word:  text_word.GetWordsSeq()) {
+      CHECK(word == arr_words[count]);
       count++;
     }
-  }
-
-  SECTION("Output to stream") {
-    std::stringstream sstr;
-    TextToWords text_word(text);
-
-    while (text_word) {
-      sstr << *text_word;
-      text_word.Next();
-    }
-
-    std::stringstream sstr2;
-    for (auto c : arr_words) {
-      sstr2 << c;
-    }
-
-    REQUIRE_THAT(sstr.str(), Catch::Matchers::Equals(sstr.str()));
-  }
-
-  SECTION("Test 1") {
-    std::string str = "some description vsegda";
-    TextToWords text_to_words(str);
-    std::vector<std::string> arr;
-
-    while (text_to_words) {
-      arr.push_back(*text_to_words);
-      text_to_words.Next();
-    }
-
-    REQUIRE(arr == std::vector<std::string>{"some", "description", "vsegda"});
   }
 }

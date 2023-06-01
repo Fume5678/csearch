@@ -7,6 +7,7 @@
 
 #include <optional>
 #include <string>
+#include <utils/Generator.h>
 
 namespace anezkasearch {
 
@@ -15,8 +16,6 @@ class TextToWords {
   TextToWords(std::string_view strv);
 
   // TODO move to AppState
-  const size_t MIN_WORD_LEN = 3;
-
   operator bool();
 
   std::string operator*() const;
@@ -32,7 +31,9 @@ class TextToWords {
   friend std::ostream& operator<<(std::ostream& os,
                                   const TextToWords& text_to_word);
 
-      private : std::string_view m_strv;
+  Generator<std::string> GetWordsSeq();
+
+ private : std::string_view m_strv;
   std::string m_word;
   size_t m_current_ind;
 };
