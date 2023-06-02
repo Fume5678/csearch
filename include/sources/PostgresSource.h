@@ -67,6 +67,7 @@ class PostgresSource {
   }
 
   Generator<std::optional<DataRow<IndT>>> IterateRowsSeq(){
+    // TODO parallel it 
     std::stringstream squery;
     squery << "SELECT " << m_index_column << ", concat(";
     for (size_t i = 0; i < m_text_column.size() - 1; i++) {
@@ -83,23 +84,6 @@ class PostgresSource {
 
     co_return;
   }
-
-//  std::optional<DataRow<IndT>> Next() {
-//    std::stringstream squery;
-//    squery << "SELECT " << m_index_column << ", concat(";
-//    for (size_t i = 0; i < m_text_column.size() - 1; i++) {
-//      squery << m_text_column[i] << ", \' \', ";
-//    }
-//    squery << m_text_column[m_text_column.size() - 1] << ") ";
-//    squery << "FROM " << m_table << ";";
-//
-//    pqxx::work tx{*m_conn};
-//    for (auto [id, text] : tx.query<IndT, std::string>(squery.str())) {
-//      LOGI << id << " " << text;
-//    }
-//
-//    return std::nullopt;
-//  }
 
  private:
   std::shared_ptr<AppState<IndT>> m_state;

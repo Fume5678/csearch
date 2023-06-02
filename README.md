@@ -54,9 +54,10 @@ indexer:
 ```
 
 ## gRPC api
-| **Service**         | **Method**    | **Type**      | **Example Input**                                                | **Example Output**                                               |
-|---------------------|---------------|---------------|------------------------------------------------------------------|------------------------------------------------------------------|
-| IndexStorageService | Insert        | single-single | { "key": "word" "indexes": [ { "i_ind": 1 }, { "i_ind": 23 } ] } | {}                                                               |
-|                     | GetIndexes    | single-single | { "key": "word" }                                                | { "key": "word" "indexes": [ { "i_ind": 1 }, { "i_ind": 23 } ] } |
-| SearchService       | SearchIndex   | single-single | { "text": "novel Leo" }                                          | { "indexes": [  { "i_ind": 12 }, { "i_ind":35 } ] }              |
-|                     | StreamSuggest | stream-stream | { "text": "lo" }                                                 | {"text": "love"}; {"text": "lord"}; {"text": "longboard"}; ...   |
+| **Service**         | **Method**      | **Type**      | **Example Input**                                                | **Example Output**                                               |
+|---------------------|-----------------|---------------|------------------------------------------------------------------|------------------------------------------------------------------|
+| IndexStorageService | Insert          | single-single | { "key": "word" "indexes": [ { "i_ind": 1 }, { "i_ind": 23 } ] } | {}                                                               |
+|                     | InsertFromeText | single-single | {"text": "some text description", "index":{"i_ind": 123}}        | {}                                                               |
+|                     | GetIndexes      | single-single | { "key": "word" }                                                | { "key": "word" "indexes": [ { "i_ind": 1 }, { "i_ind": 23 } ] } |
+| SearchService       | SearchIndex     | single-single | { "text": "novel Leo" }                                          | { "indexes": [  { "i_ind": 12 }, { "i_ind":35 } ] }              |
+|                     | StreamSuggest   | stream-stream | { "text": "lo" }                                                 | {"text": "love"}; {"text": "lord"}; {"text": "longboard"}; ...   |
