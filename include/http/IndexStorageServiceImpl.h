@@ -6,6 +6,7 @@
 #define ANEZKASEARCH_INDESTORAGESERVICEIMPL_H
 
 #include <AppState.h>
+#include <utils/TextToWords.h>
 #include <sstream>
 #include <string>
 
@@ -20,23 +21,45 @@ class IndexStorageServiceImpl : public IndexStorageService::Service {
       : m_state{state}, m_index_storage{state->GetIndexStorage()} {
   }
 
-  // TODO rename to indexes
+  grpc::Status InsertFromText(::grpc::ServerContext* context,
+                              const ::anezkasearch::IndexText* request,
+                              ::anezkasearch::Empty* response) override {
+    if constexpr (std::is_same<IndT, IntInd>::value) {
+      LOGI << "Insert index " << request->index().i_ind() << " by text  "
+           << request->text();
+    } else {
+      LOGI << "Insert index " << request->index().s_ind() << " by text  "
+           << request->text();
+    }
+
+    TextToWords text_to_keys(request->text());
+    for (const auto& key : text_to_keys.GetWordsSeq()) {
+      if constexpr (std::is_same<IndT, IntInd>::value) {
+        m_index_storage->Insert(key, request->index().i_ind());
+      }
+      else {
+        m_index_storage->Insert(key, request->index().s_ind());
+      }
+    }
+
+    return grpc::Status::OK;
+  }
+
   grpc::Status InsertIndex(::grpc::ServerContext* context,
                            const ::anezkasearch::KeyIndexes* request,
-                           ::anezkasearch::Empty* response) {
+                           ::anezkasearch::Empty* response) override {
     std::stringstream sstr;
     sstr << "Insert index by key  " << request->key() << ": "
          << " [ ";
 
-    // TODO implement search request handler
     for (const auto& ind : request->indexes()) {
       if constexpr (std::is_same<IndT, IntInd>::value) {
         sstr << std::to_string(ind.i_ind()) << ", ";
-        m_index_storage->Insert( request->key(), ind.i_ind());
+        m_index_storage->Insert(request->key(), ind.i_ind());
       }
       else {
         sstr << ind.s_ind() << ", ";
-        m_index_storage->Insert( request->key(), ind.s_ind());
+        m_index_storage->Insert(request->key(), ind.s_ind());
       }
     }
     sstr << "]";
@@ -47,7 +70,7 @@ class IndexStorageServiceImpl : public IndexStorageService::Service {
 
   grpc::Status GetIndexes(::grpc::ServerContext* context,
                           const ::anezkasearch::KeyIndexes* request,
-                          ::anezkasearch::KeyIndexes* response) {
+                          ::anezkasearch::KeyIndexes* response) override {
     LOGI << "Get indexes by key " << request->key();
     response->set_key(request->key());
     for (const auto& ind : m_index_storage->Get(request->key())) {
@@ -65,6 +88,7 @@ class IndexStorageServiceImpl : public IndexStorageService::Service {
   grpc::Status RemoveIndexes(::grpc::ServerContext* context,
                              const ::anezkasearch::KeyIndexes* request,
                              ::anezkasearch::Empty* response) {
+    // TODO implement this method
     std::stringstream sstr;
     sstr << "Remove next indexes [ ";
     for (const auto& ind : request->indexes()) {

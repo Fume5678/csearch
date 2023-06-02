@@ -17,6 +17,7 @@ package anezkasearch;
 
 service IndexStorageService {
   rpc InsertIndex(KeyIndexes) returns (Empty);
+  rpc InsertFromText(IndexText) returns (Empty);
   rpc GetIndexes(KeyIndexes) returns (KeyIndexes);
   rpc RemoveIndex(KeyIndexes) returns (Empty);
 }
@@ -37,6 +38,19 @@ message KeyIndexes {
       string s_ind = 4;
     }
   }
+}
+
+message IndexText {
+  ToIndex index = 1;
+
+  message ToIndex {
+    oneof to{
+      int64 i_ind = 2;
+      string s_ind = 3;
+    }
+  }
+
+  string text = 4;
 }
 
 message SearchRequest{
