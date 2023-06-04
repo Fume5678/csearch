@@ -94,9 +94,11 @@ class IndexStorageServiceImpl : public IndexStorageService::Service {
     for (const auto& ind : request->indexes()) {
       if constexpr (std::is_same<IndT, IntInd>::value) {
         sstr << std::to_string(ind.i_ind()) << ", ";
+        m_index_storage->RemoveInd(ind.i_ind());
       }
       else {
         sstr << ind.s_ind() << ", ";
+        m_index_storage->RemoveInd(ind.s_ind());
       }
     }
     sstr << "]";
