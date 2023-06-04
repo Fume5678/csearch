@@ -16,13 +16,16 @@ template <typename IndT>
 void RunApp(const CommandArgs& args, Config& config){
   std::shared_ptr state = std::make_shared<AppState<IndT>>(args, config);
 
-  if (state->GetConfig()["indexer"]["source"].template as<std::string>() == "postgres"){
-    Indexer<PostgresSource, IndT> indexer(state);
-    indexer.Run();
-  } else {
-    LOGW << "indexer source is not specified or unsupported";
+  if(state->GetConfig()["indexer"].IsDefined()) {
+    if (state->GetConfig()["indexer"]["source"].template as<std::string>() ==
+        "postgres") {
+      Indexer<PostgresSource, IndT> indexer(state);
+      indexer.Run();
+    }
+    else {
+      LOGW << "indexer source is not specified or unsupported";
+    }
   }
-
 
   GrpcServer grpc_server(state);
   grpc_server.Run();
