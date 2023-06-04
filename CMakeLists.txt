@@ -54,3 +54,4 @@ target_link_libraries(anezkasearch_exe ${EXT_LIBRARIES} grpc++)
 
 # test
 add_subdirectory(test/units)
+add_subdirectory(test/benchmarks)

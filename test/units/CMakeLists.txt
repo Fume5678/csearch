@@ -1,6 +1,4 @@
-
-option(DOWNLOAD_DEPENDENCIES "Allow cmake download dependencies library" ON)
-option(ENABLED_BENCHMARK "Enable benchmark tests" OFF)
+project(anezkasearch_tests)
 
 include(${CMAKE_SOURCE_DIR}/cmake/find-catch2.cmake)
 
@@ -43,11 +41,6 @@ target_link_libraries(anezkasearch_tests PRIVATE ${EXT_LIBRARIES})
 #FILE(COPY test_config.yaml DESTINATION ${CMAKE_BINARY_DIR})
 
 configure_file(test_config.yaml ${CMAKE_BINARY_DIR}/test/units/test_config.yaml COPYONLY)
-
-
-if(ENABLED_BENCHMARK)
-    target_compile_definitions(anezkasearch_tests PRIVATE ENABLED_BENCHMARK)
-endif()
 
 list(APPEND CMAKE_MODULE_PATH ${catch2_SOURCE_DIR}/extras)
 include(CTest)
