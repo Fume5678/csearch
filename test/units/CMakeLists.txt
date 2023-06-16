@@ -16,6 +16,8 @@ FILE(GLOB_RECURSE TESTS_SRC
     ./test_AppState_and_ConfigParser.cpp
     ./test_IndexStorage.cpp
     ./test_Vocabulary.cpp
+    ./test_WordValidator.cpp
+#    ./test_Cyrillic.cpp
 )
 message(${TESTS_SRC})
 

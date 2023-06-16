@@ -6,6 +6,7 @@ app:
 data:
   index_type: integer
   min_key_len: 3
+  stopwords: '/home/fumedesk/projects/cpp/anezkasearch/stopwords.json'
 
 indexer:
   source: postgres

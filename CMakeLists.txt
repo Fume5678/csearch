@@ -15,6 +15,7 @@ include(cmake/find-pqxx.cmake)
 include(cmake/find-fmt.cmake)
 include(cmake/find-plog.cmake)
 include(cmake/find-yamlcpp.cmake)
+include(cmake/find-json.cmake)
 
 add_subdirectory(external/grpc)
 
@@ -49,6 +50,7 @@ SET(EXT_LIBRARIES
     PRIVATE fmt::fmt-header-only
     PRIVATE plog
     PRIVATE yaml-cpp::yaml-cpp
+    PRIVATE nlohmann_json::nlohmann_json
 )
 target_link_libraries(anezkasearch_exe ${EXT_LIBRARIES} grpc++)
 

@@ -34,8 +34,8 @@ TEST_CASE("AppState owns command line args"){
   cxxopts::Options options = GetOptions();
   cxxopts::ParseResult res = options.parse(ARGC, ARGV);
   auto file = res["file"].as<std::string>();
-  REQUIRE(file == "somefile.yml");
 
+  REQUIRE(file == "somefile.yml");
   AppState<IntInd> state(res);
   REQUIRE(state.GetArgs()["log-output"].count() == 1);
 

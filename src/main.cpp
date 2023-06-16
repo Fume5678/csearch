@@ -53,10 +53,15 @@ int main(int argc, char** argv) {
   }
 
   if(command_args.count("file") == 0){
-    throw std::runtime_error("No input configuration file");
+    LOGE << "No input configuration file";
+    return EXIT_FAILURE;
   }
   Config config = ConfigFromFile(command_args["file"].as<std::string>());
 
+  if(!config["data"]["index_type"].IsDefined()) {
+   LOGE << "index_type if not defined";
+   return EXIT_FAILURE;
+  }
   if(config["data"]["index_type"].as<std::string>() == "integer") {
     RunApp<IntInd>(command_args, config);
   } else if (config["data"]["index_type"].as<std::string>() == "string") {

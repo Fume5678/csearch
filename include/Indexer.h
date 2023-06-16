@@ -54,8 +54,8 @@ class Indexer {
         LOGI << "nullopt returned";
         continue;
       }
-      LOGI << fmt::format("Data row: id {} text [\"{}\"]", data_row->id,
-                               data_row->text_data);
+//      LOGI << fmt::format("Data row: id {} text [\"{}\"]", data_row->id,
+//                               data_row->text_data);
 
       TextToWords text_to_words(data_row->text_data);
       std::string log_msg = "";
@@ -67,7 +67,7 @@ class Indexer {
           m_state->GetVocabulary(VocabularyLang::EN)->Insert(word);
         }
       }
-      LOGI << fmt::format("To words: [{}]", log_msg);
+//      LOGI << fmt::format("To words: [{}]", log_msg);
     };
 
     PLOG_INFO << "Indexer end iterate row!";

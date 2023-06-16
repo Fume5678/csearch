@@ -24,6 +24,7 @@ static std::vector data_rows = {
     std::tuple(1, "title 1", "some description vsegda"),
     std::tuple(2, "name 2", "a pochemu i da"),
     std::tuple(3, "test 3", "on vsegda hotel pivka"),
+    std::tuple(4, "книга", "описание на русском"),
 };
 
 // Mock Connection
@@ -100,11 +101,13 @@ TEST_CASE("Indexer tests") {
     REQUIRE(MockDbConnection<IntInd>::init_count == 1);
     REQUIRE(MockDbConnection<IntInd>::close_count == 1);
     REQUIRE(MockDbConnection<IntInd>::iterate_rows == 1);
-    REQUIRE(MockDbConnection<IntInd>::next_count == 3);
+    REQUIRE(MockDbConnection<IntInd>::next_count == 4);
 
     REQUIRE(state->GetWeakIndexStorage().lock()->Get("pochemu") ==
             std::vector<IntInd>{2});
     REQUIRE(state->GetWeakIndexStorage().lock()->Get("vsegda") ==
             std::vector<IntInd>{1, 3});
+    REQUIRE(state->GetWeakIndexStorage().lock()->Get("русском") ==
+            std::vector<IntInd>{4});
   }
 }

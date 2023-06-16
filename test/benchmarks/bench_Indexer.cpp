@@ -16,6 +16,7 @@
 using namespace anezkasearch;
 using namespace std::chrono_literals;
 
+// TODO заменить на гугл бенчмарк
 TEST_CASE("Indexer benchmarks") {
   cxxopts::Options options = GetOptions();
   cxxopts::ParseResult res = options.parse(ARGC, ARGV);
