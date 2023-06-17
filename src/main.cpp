@@ -19,6 +19,7 @@ void RunApp(const CommandArgs& args, Config& config){
   if(state->GetConfig()["indexer"].IsDefined()) {
     if (state->GetConfig()["indexer"]["source"].template as<std::string>() ==
         "postgres") {
+
       Indexer<PostgresSource, IndT> indexer(state);
       indexer.Run();
     }

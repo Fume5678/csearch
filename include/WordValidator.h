@@ -13,40 +13,28 @@
 #include <fstream>
 #include <nlohmann/json.hpp>
 #include <fmt/ranges.h>
+#include <plog/Log.h>
 
-#include <AppState.h>
 #include <Vocabulary.h>
 
 namespace anezkasearch {
 
 
-template <typename IndT>
 class WordValidator {
  public:
-  WordValidator(std::shared_ptr<AppState<IndT>> state) : m_state{state}, m_min_key_len{0}{
-    if(m_state->GetConfig()["data"]["min_key_len"].IsDefined()) {
-      m_min_key_len =
-          m_state->GetConfig()["data"]["min_key_len"].template as<uint32_t>();
-    } else {
-      LOGI << "min key size by default: 3";
-    }
-
+  WordValidator(const std::string& path_to_sw, size_t min_key_len = 0)
+  : 
+   m_path_to_sw{path_to_sw},
+   m_min_key_len{min_key_len}{
   }
 
-  void InitVocabularies() {
+  inline void InitVocabularies() {
     using namespace nlohmann;
 
-    if(!m_state->GetConfig()["data"]["stopwords"].template IsDefined()){
-      LOGW << "stopwords is not defined";
-      return;
-    }
-
     try {
-      std::string path_to_sw = m_state->GetConfig()["data"]["stopwords"].template as<std::string>();
+      LOGI << "Stopwords reads from " << m_path_to_sw << std::endl;
 
-      LOGI << "Stopwords reads from " << path_to_sw << std::endl;
-
-      std::ifstream f(path_to_sw);
+      std::ifstream f(m_path_to_sw);
       f.exceptions(std::ios::badbit | std::ios::failbit);
 
       json stopword_js = json::parse(f);
@@ -69,7 +57,7 @@ class WordValidator {
     LOGI << "End read stopwords " << std::endl;
   }
 
-  bool CheckWord(const std::string& word) {
+  inline bool CheckWord(const std::string& word) {
     std::wstring w_word = converter.from_bytes(word.data());
 
     if(w_word.size() < m_min_key_len){
@@ -90,7 +78,7 @@ class WordValidator {
 
 
  private:
-  std::shared_ptr<AppState<IndT>> m_state;
+  std::string m_path_to_sw;
   size_t m_min_key_len;
   const  std::array<std::string, 2> stop_words_langs = {"en", "ru"};
   std::unordered_map<std::string, std::unique_ptr<Vocabulary>> m_vocabularies;

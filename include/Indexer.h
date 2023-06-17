@@ -43,6 +43,9 @@ class Indexer {
     } else {
       LOGI << "min key size by default: 3";
     }
+
+    
+
   }
 
   void Run() {

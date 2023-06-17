@@ -19,6 +19,7 @@
 #include <Index.h>
 #include <IndexStorage.h>
 #include <Vocabulary.h>
+#include <WordValidator.h>
 
 namespace anezkasearch {
 
@@ -38,6 +39,20 @@ class AppState {
     InitLog();
     LOGI << "Initializaion AppState";
     m_index_storage = std::make_shared<IndexStorage<IndT>>();
+
+    size_t min_key_len = 0;
+    if(m_config["data"]["min_key_len"].IsDefined()) {
+      min_key_len =
+          m_config["data"]["min_key_len"].as<uint32_t>();
+    }
+
+    if(m_config["data"]["stopwords"].IsDefined()){
+      m_word_validator = std::make_shared<WordValidator>(
+        m_config["data"]["stopwords"].as<std::string>(), min_key_len); 
+    } else {
+      LOGW << "stopwords is not defined";
+    }
+
   }
 
   inline void InitLog() {
@@ -83,6 +98,10 @@ class AppState {
     return {m_index_storage};
   }
 
+  inline std::shared_ptr<WordValidator> GetWordValidator() {
+    return {m_word_validator};
+  }
+
   inline std::shared_ptr<Vocabulary> GetVocabulary(VocabularyLang lang) {
     if(not m_vocabularies.contains(lang)){
       m_vocabularies.insert({lang, std::make_shared<Vocabulary>()});
@@ -91,9 +110,11 @@ class AppState {
     return {m_vocabularies[lang]};
   }
 
+
  private:
   IndT type_value{};
   std::shared_ptr<IndexStorage<IndT>> m_index_storage;
+  std::shared_ptr<WordValidator> m_word_validator;
   //  std::shared_ptr<Vocabulary> m_vocabulary;
   std::unordered_map<VocabularyLang, std::shared_ptr<Vocabulary>>
       m_vocabularies;
