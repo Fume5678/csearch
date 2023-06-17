@@ -15,4 +15,9 @@ TEST_CASE("WorldValidator inition"){
   auto state = std::make_shared<AppState<IntInd>>(res, config);
   WordValidator validator(state);
   validator.InitVocabularies();
+
+  REQUIRE_FALSE(validator.CheckWord("or"));
+  REQUIRE_FALSE(validator.CheckWord("все"));
+  REQUIRE(validator.CheckWord("слово"));
+  REQUIRE_FALSE(validator.CheckWord("сл"));
 }

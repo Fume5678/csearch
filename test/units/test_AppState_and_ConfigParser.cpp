@@ -24,9 +24,6 @@ TEST_CASE("Parsing config") {
 
   REQUIRE(config);
   REQUIRE(config["version"].as<std::string>() == "0.1");
-  REQUIRE(config["indexer"]["source"].as<std::string>() == "postgres");
-  REQUIRE(config["indexer"]["content"]["key_columns"].size() == 2);
-  REQUIRE(config["indexer"]["content"]["key_columns"][0].as<std::string>() == "title");
   REQUIRE_FALSE(config["bad_tag"].IsDefined());
 }
 

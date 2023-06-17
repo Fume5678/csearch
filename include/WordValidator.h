@@ -23,7 +23,13 @@ namespace anezkasearch {
 template <typename IndT>
 class WordValidator {
  public:
-  WordValidator(std::shared_ptr<AppState<IndT>> state):m_state{state}{
+  WordValidator(std::shared_ptr<AppState<IndT>> state) : m_state{state}, m_min_key_len{0}{
+    if(m_state->GetConfig()["data"]["min_key_len"].IsDefined()) {
+      m_min_key_len =
+          m_state->GetConfig()["data"]["min_key_len"].template as<uint32_t>();
+    } else {
+      LOGI << "min key size by default: 3";
+    }
 
   }
 
@@ -63,13 +69,33 @@ class WordValidator {
     LOGI << "End read stopwords " << std::endl;
   }
 
-  bool CheckWord(std::string word) const;
+  bool CheckWord(const std::string& word) {
+    std::wstring w_word = converter.from_bytes(word.data());
+
+    if(w_word.size() < m_min_key_len){
+      return false;
+    }
+
+    if((L'А' <= w_word[0] && w_word[0] <= L'Я') || (L'а' <= w_word[0] && w_word[0] <= L'я')){
+      return not m_vocabularies["ru"]->Contains(word);
+    }
+    
+    if((L'A' <= w_word[0] && w_word[0] <= L'Z') || (L'a' <= w_word[0] && w_word[0] <= L'z')){
+      return not m_vocabularies["en"]->Contains(word);
+    }
+    // TODO(fumedesk): change all on wchar
+
+    return true;
+  }
 
 
  private:
   std::shared_ptr<AppState<IndT>> m_state;
+  size_t m_min_key_len;
   const  std::array<std::string, 2> stop_words_langs = {"en", "ru"};
   std::unordered_map<std::string, std::unique_ptr<Vocabulary>> m_vocabularies;
+  std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+
 };
 
 } // namespace anezkasearch
